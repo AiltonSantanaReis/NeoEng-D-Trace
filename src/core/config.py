@@ -80,6 +80,16 @@ class AppConfig(StrictConfigModel):
         default=None,
         max_length=MAX_CONFIG_PATH_LENGTH,
     )
+    # Unity login and licensing remain external to the project.  These fields
+    # only remember optional executable locations in the user's local state.
+    unity_hub_path: Optional[str] = Field(
+        default=None,
+        max_length=MAX_CONFIG_PATH_LENGTH,
+    )
+    unity_editor_path: Optional[str] = Field(
+        default=None,
+        max_length=MAX_CONFIG_PATH_LENGTH,
+    )
     autosave_enabled: bool = True
     autosave_interval_seconds: int = Field(default=60, ge=15, le=3_600)
 

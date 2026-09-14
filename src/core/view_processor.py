@@ -1,4 +1,6 @@
 # src/core/view_processor.py
+import importlib
+
 import cv2
 import numpy as np
 
@@ -16,30 +18,25 @@ def has_cuda():
         return False
 
 
-# Check for GPU availability
-try:
-    import cupy as cp
-    import cupyx.scipy.ndimage as cupy_ndimage
+def _initialize_optional_cupy(importer=None):
+    """Load the optional accelerator without making CPU fallback look faulty."""
+    load_module = importer or importlib.import_module
+    try:
+        cp_module = load_module("cupy")
+        cupy_ndimage = load_module("cupyx.scipy.ndimage")
 
-    # Verifica se realmente temos uma GPU acessível pelo CuPy
-    if cp.cuda.runtime.getDeviceCount() > 0:
-        HAS_GPU = True
-        ndimage = cupy_ndimage
-        logger.info("CUDA GPU acceleration enabled via CuPy.")
-    else:
-        HAS_GPU = False
-        cp = None
-        ndimage = None
-except ImportError:
-    cp = None
-    ndimage = None
-    HAS_GPU = False
-    logger.warning("CuPy not found. Fallback to CPU processing.")
-except Exception as e:
-    HAS_GPU = False
-    cp = None
-    ndimage = None
-    logger.warning(f"Error initializing CuPy: {e}")
+        # Verifica se realmente temos uma GPU acessível pelo CuPy
+        if cp_module.cuda.runtime.getDeviceCount() > 0:
+            logger.info("CUDA GPU acceleration enabled via CuPy.")
+            return cp_module, cupy_ndimage, True
+    except ImportError:
+        logger.info("CuPy unavailable; CPU processing fallback is active.")
+    except Exception as exc:
+        logger.warning("Error initializing CuPy: %s", exc)
+    return None, None, False
+
+
+cp, ndimage, HAS_GPU = _initialize_optional_cupy()
 
 
 class ViewProcessor:

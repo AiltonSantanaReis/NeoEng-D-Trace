@@ -1,0 +1,581 @@
+{
+  "schema": "neoeng-d-trace-reference-3d-asset",
+  "schema_version": 1,
+  "lifecycle_status": "IN_PROGRESS",
+  "asset": {
+    "name": "Eclipse Warden",
+    "version": "0.1.0",
+    "units": "meters",
+    "coordinate_system": "glTF 2.0 Y-up right-handed",
+    "source_method": "procedural_original"
+  },
+  "source": {
+    "references": [
+      {
+        "filename": "1-Foto-1.jpg",
+        "sha256": "1EEE95F73802B6205B84097537E93B0434EE2EAEE1A52DAB17E24A618F11939E"
+      },
+      {
+        "filename": "2-Foto-2.jpg",
+        "sha256": "1EE40AD572538A177A6D31227C73343EB511C55DD0469B3E9597514FE941AB8D"
+      },
+      {
+        "filename": "3-Foto-3.jpg",
+        "sha256": "C8C2CC6C6FAFB45FA09AD1420D8F5F6D93B1946930FE36F39D59353E62F309C8"
+      }
+    ],
+    "reference_license_status": "USER_SUPPLIED_UNVERIFIED",
+    "geometry_and_textures_use_reference_pixels": false
+  },
+  "files": {
+    "glb": "eclipse_warden.glb",
+    "gltf": "eclipse_warden.gltf",
+    "bin": "eclipse_warden.bin",
+    "obj": "eclipse_warden.obj",
+    "mtl": "eclipse_warden.mtl",
+    "unity_guide": "UNITY_IMPORT_GUIDE.md",
+    "godot_preview": "godot_preview"
+  },
+  "components": [
+    {
+      "name": "Torso_Armor",
+      "material": "Armor_Metal",
+      "vertex_count": 48,
+      "triangle_count": 24,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Hood",
+      "material": "Cloth_Cape",
+      "vertex_count": 284,
+      "triangle_count": 492,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Face_Plate",
+      "material": "Armor_Metal",
+      "vertex_count": 48,
+      "triangle_count": 24,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Shoulder_L",
+      "material": "Armor_Metal",
+      "vertex_count": 260,
+      "triangle_count": 480,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          0.95,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "UpperArm_Armor_L",
+      "material": "Armor_Metal",
+      "vertex_count": 24,
+      "triangle_count": 12,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Gauntlet_L",
+      "material": "Armor_Metal",
+      "vertex_count": 154,
+      "triangle_count": 76,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Shoulder_R",
+      "material": "Armor_Metal",
+      "vertex_count": 260,
+      "triangle_count": 480,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          0.95,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "UpperArm_Armor_R",
+      "material": "Armor_Metal",
+      "vertex_count": 24,
+      "triangle_count": 12,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Gauntlet_R",
+      "material": "Armor_Metal",
+      "vertex_count": 154,
+      "triangle_count": 76,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Belt",
+      "material": "Leather_Belts",
+      "vertex_count": 48,
+      "triangle_count": 24,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Cloth_Skirt_Front",
+      "material": "Cloth_Cape",
+      "vertex_count": 36,
+      "triangle_count": 50,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Cloth_Skirt_L",
+      "material": "Cloth_Cape",
+      "vertex_count": 36,
+      "triangle_count": 50,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Thigh_Armor_L",
+      "material": "Armor_Metal",
+      "vertex_count": 24,
+      "triangle_count": 12,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Boot_L",
+      "material": "Leather_Boots",
+      "vertex_count": 48,
+      "triangle_count": 24,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Cloth_Skirt_R",
+      "material": "Cloth_Cape",
+      "vertex_count": 36,
+      "triangle_count": 50,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Thigh_Armor_R",
+      "material": "Armor_Metal",
+      "vertex_count": 24,
+      "triangle_count": 12,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Boot_R",
+      "material": "Leather_Boots",
+      "vertex_count": 48,
+      "triangle_count": 24,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Cape_Center",
+      "material": "Cloth_Cape",
+      "vertex_count": 36,
+      "triangle_count": 50,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Cape_L",
+      "material": "Cloth_Cape",
+      "vertex_count": 36,
+      "triangle_count": 50,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Cape_R",
+      "material": "Cloth_Cape",
+      "vertex_count": 36,
+      "triangle_count": 50,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Sword_Blade",
+      "material": "Armor_Metal",
+      "vertex_count": 40,
+      "triangle_count": 20,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Sword_Hilt",
+      "material": "Leather_Belts",
+      "vertex_count": 80,
+      "triangle_count": 40,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Energy_Rune",
+      "material": "Energy_Rune",
+      "vertex_count": 24,
+      "triangle_count": 12,
+      "uv0_range": {
+        "min": [
+          0.0,
+          0.0
+        ],
+        "max": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "materials": [
+    {
+      "name": "Armor_Metal",
+      "base_color": "textures/armor_basecolor.png",
+      "metallic_roughness": "textures/armor_orm.png",
+      "normal": "textures/armor_normal.png",
+      "emissive": null
+    },
+    {
+      "name": "Cloth_Cape",
+      "base_color": "textures/cloth_basecolor.png",
+      "metallic_roughness": "textures/cloth_orm.png",
+      "normal": "textures/cloth_normal.png",
+      "emissive": null
+    },
+    {
+      "name": "Leather_Belts",
+      "base_color": "textures/leather_basecolor.png",
+      "metallic_roughness": "textures/leather_orm.png",
+      "normal": "textures/leather_normal.png",
+      "emissive": null
+    },
+    {
+      "name": "Leather_Boots",
+      "base_color": "textures/leather_basecolor.png",
+      "metallic_roughness": "textures/leather_orm.png",
+      "normal": "textures/leather_normal.png",
+      "emissive": null
+    },
+    {
+      "name": "Energy_Rune",
+      "base_color": "textures/energy_basecolor.png",
+      "metallic_roughness": "textures/energy_orm.png",
+      "normal": "textures/energy_normal.png",
+      "emissive": "textures/energy_basecolor.png"
+    }
+  ],
+  "textures": [
+    {
+      "name": "armor_basecolor.png",
+      "uri": "textures/armor_basecolor.png",
+      "mimeType": "image/png",
+      "sha256": "C2DFAA4024001352C745DBB564684AB98DF6EEE6A446C0320BF5DA196C6957D2"
+    },
+    {
+      "name": "armor_orm.png",
+      "uri": "textures/armor_orm.png",
+      "mimeType": "image/png",
+      "sha256": "FE758877CDA88225A4504344D521C1EA712DB1C25E51903790ED39770DC64ACE"
+    },
+    {
+      "name": "armor_normal.png",
+      "uri": "textures/armor_normal.png",
+      "mimeType": "image/png",
+      "sha256": "EDE049C0927C5B7492AE9A0DC9AFA17498803B54E6C9F859C0D37D5667F74BEC"
+    },
+    {
+      "name": "cloth_basecolor.png",
+      "uri": "textures/cloth_basecolor.png",
+      "mimeType": "image/png",
+      "sha256": "789FD299D0D519DCFFA63ECF189F85E376541155A5ACFDE2424707E18BC1A263"
+    },
+    {
+      "name": "cloth_orm.png",
+      "uri": "textures/cloth_orm.png",
+      "mimeType": "image/png",
+      "sha256": "D80D3A178F40A6BD67E6B1394677C4EECE335F637A8DB5F724F21C8EA5AE171F"
+    },
+    {
+      "name": "cloth_normal.png",
+      "uri": "textures/cloth_normal.png",
+      "mimeType": "image/png",
+      "sha256": "EDE049C0927C5B7492AE9A0DC9AFA17498803B54E6C9F859C0D37D5667F74BEC"
+    },
+    {
+      "name": "leather_basecolor.png",
+      "uri": "textures/leather_basecolor.png",
+      "mimeType": "image/png",
+      "sha256": "3B41345137CAC8221FA1981D424F70E3FF5EEB721688DADE7C141F8422C198A6"
+    },
+    {
+      "name": "leather_orm.png",
+      "uri": "textures/leather_orm.png",
+      "mimeType": "image/png",
+      "sha256": "8430B1E96F61D8FEB619C60F32DC49047A61D1E2C1F88BA1C9F18CB4338E9E27"
+    },
+    {
+      "name": "leather_normal.png",
+      "uri": "textures/leather_normal.png",
+      "mimeType": "image/png",
+      "sha256": "B8493D618AEF785C0F10405DC13FBB681C55D3384773479518EF635CD05A0CD5"
+    },
+    {
+      "name": "energy_basecolor.png",
+      "uri": "textures/energy_basecolor.png",
+      "mimeType": "image/png",
+      "sha256": "D63B1595802C74B729733E85A77A2903F410DC740BC5583E0EBE88CB261D4DB7"
+    },
+    {
+      "name": "energy_orm.png",
+      "uri": "textures/energy_orm.png",
+      "mimeType": "image/png",
+      "sha256": "6323FE7F41CFE03097F3BBF273C3046F2D8377A51F5983A5177F961290864506"
+    },
+    {
+      "name": "energy_normal.png",
+      "uri": "textures/energy_normal.png",
+      "mimeType": "image/png",
+      "sha256": "1CF9794CA81E4D8ACA2CC28F526EFB383B2D38C98080D7D04810626EAC5F81EC"
+    }
+  ],
+  "rig": {
+    "type": "skinned_generic",
+    "joint_count": 18,
+    "joints": [
+      "root",
+      "pelvis",
+      "spine",
+      "chest",
+      "neck",
+      "head",
+      "upper_arm_l",
+      "lower_arm_l",
+      "hand_l",
+      "upper_arm_r",
+      "lower_arm_r",
+      "hand_r",
+      "upper_leg_l",
+      "lower_leg_l",
+      "foot_l",
+      "upper_leg_r",
+      "lower_leg_r",
+      "foot_r"
+    ],
+    "inverse_bind_matrices": true
+  },
+  "animations": [
+    {
+      "name": "Idle",
+      "duration_seconds": 2.0,
+      "loop": true,
+      "channels": 3
+    }
+  ],
+  "compatibility": {
+    "unity": {
+      "status": "PENDING_EVIDENCE",
+      "format": "glTF 2.0 / GLB",
+      "rig_import_hint": "Generic first; Humanoid requires manual mapping validation",
+      "urp_hdrp_material_remap": "required per project pipeline"
+    },
+    "godot": {
+      "status": "PASS",
+      "version_tested": "4.7",
+      "import_report": "godot_preview/godot-runtime-report.json",
+      "captures": [
+        "godot_preview/preview_front.png",
+        "godot_preview/preview_three_quarter.png",
+        "godot_preview/preview_side.png",
+        "godot_preview/preview_idle.png"
+      ],
+      "driver": "windows/OpenGL/NVIDIA"
+    }
+  },
+  "validation": {
+    "status": "PASS",
+    "report": "structural-validation.json",
+    "tamper_test": "PASS"
+  },
+  "provenance": {
+    "commit": "4bef2a42ee74510c80f8681d310ed055d63bcae8"
+  }
+}

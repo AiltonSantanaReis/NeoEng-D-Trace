@@ -1,0 +1,28 @@
+{
+  "main": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r1\\01-main.png",
+    "sha256": "343105BEC17ECE85940C586203DF263D729D0ED689D6BEDC58836702944BB638"
+  },
+  "main_after_project_load": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r1\\03-main-after-project-load.png",
+    "sha256": "09AEE4F2BE4084EB8A1ABC85BF71954618B41C6D8296A885486848704D1690B3"
+  },
+  "view_menu_popup_screen": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r1\\03-view-menu-popup-screen.png",
+    "sha256": "A8ADDAF21EC59008575C49828E17340321AA4A25EFD89EB42707B3A03BEA9C22",
+    "capture": "primary screen CopyFromScreen",
+    "bounds": "0,0,3840,2160"
+  },
+  "mask_viewer": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r1\\04-mask-viewer.png",
+    "sha256": "D498CD336C354FDEBC0C9F9F52BBADCC8F7FCE76999FFBD42ABB8621617F8667"
+  },
+  "asset_library_ready": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r1\\05-asset-library-ready.png",
+    "sha256": "ED19932F2263BA38A7469B6E3C5953FC92CA36F7EBF5C9D1E3945E91E48BED95"
+  },
+  "asset_library_filter_contract": "covered by focused Qt tests; controls visible in asset_library_ready",
+  "editor_title": "Editor de Cenário — NeoEng-D-Trace",
+  "editor_window_rect_before_tilemap_flow": "-13,-13,3853,2077",
+  "window": "captured by PrintWindow from binary window handle"
+}

@@ -65,6 +65,19 @@ def _run(command: list[str], cwd: Path, timeout: int = 180) -> dict[str, object]
     }
 
 
+def _engine_status(
+    enabled: bool, passed: bool, run: dict[str, object]
+) -> str:
+    """Expose the evaluated engine gate instead of its initial placeholder."""
+    if not enabled:
+        return "NOT_RUN"
+    if passed:
+        return "PASS"
+    if run.get("status") == "PENDING_EVIDENCE":
+        return "PENDING_EVIDENCE"
+    return "FAIL"
+
+
 def _authoring_fixture(root: Path) -> tuple[Path, Path]:
     project = root / "authoring"
     atlas = project / "assets" / "tiles" / "terrain.png"
@@ -564,6 +577,12 @@ def main() -> int:
         and unity_negative.get("returncode") == 0
         and isinstance(unity_run.get("negative_report"), dict)
         and unity_run["negative_report"].get("status") == "REJECTED"
+    )
+    godot_run["status"] = _engine_status(
+        args.engine in {"both", "godot"}, godot_pass, godot_run
+    )
+    unity_run["status"] = _engine_status(
+        args.engine in {"both", "unity"}, unity_pass, unity_run
     )
     report = {
         "schema_version": 1,

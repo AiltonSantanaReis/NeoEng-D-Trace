@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "feature_id": "AUD-POST-E13-GPU-WORKLOAD-CONTROLADO-20260913",
+  "status": "PASS_CONTROLLED_GPU_WORKLOAD",
+  "source_commit": "10e691581e936d8f69d26a9ced7789d0375d2e4c",
+  "environment": {
+    "runtime": "Docker Desktop Linux/WSL2",
+    "docker_server": "29.5.3",
+    "image": "python:3.11-slim",
+    "image_id": "sha256:b8fe4ce3655e95f7f22c2a87d8e03a2f1f0cedc488a8e9adf18cc5a18cfdf401",
+    "networking": "none",
+    "filesystem": "container read-only; workspace mount read-only",
+    "memory_limit": "1g",
+    "pids_limit": 128
+  },
+  "runner": {
+    "path": "artifacts/audit-post-e13-performance-gpu-controlled-20260913-r1/run_gpu_soak.py",
+    "sha256": "ADC6EAB45C1AD9C117FA58A4D96A56E4D2187B333C5E580C0EEF922A203277C5",
+    "bytes": 8583
+  },
+  "driver": {
+    "library": "libcuda.so.1",
+    "cuInit": 0,
+    "cuDeviceGetCount": 0,
+    "device_count": 1,
+    "cuDeviceGet": 0,
+    "cuDeviceGetName": 0,
+    "device_name": "NVIDIA GeForce RTX 3070 Ti",
+    "cuCtxCreate": 0,
+    "cuMemAlloc": 0,
+    "cuMemFree": 0,
+    "cuCtxDestroy": 0
+  },
+  "workload": {
+    "duration_target_seconds": 20.0,
+    "elapsed_seconds": 20.0,
+    "allocation_mib": 256,
+    "operation": "repeated synchronous cuMemsetD8 on one CUDA allocation",
+    "iterations": 36408,
+    "operations_per_second": 1820.38,
+    "errors": []
+  },
+  "telemetry": {
+    "source": "nvidia-smi query-gpu sampled every 0.5 seconds",
+    "sample_count": 38,
+    "gpu_utilization_percent_min": 37.0,
+    "gpu_utilization_percent_max": 91.0,
+    "memory_used_mib_min": 2865.0,
+    "memory_used_mib_max": 2865.0,
+    "memory_total_mib": 8192.0,
+    "memory_utilization_percent_min": 34.0,
+    "memory_utilization_percent_max": 100.0,
+    "power_draw_w_min": 32.07,
+    "power_draw_w_max": 194.69,
+    "errors": []
+  },
+  "classification": {
+    "gpu_transport": "PASS",
+    "controlled_gpu_workload": "PASS",
+    "qgraphicsview_gpu_counter": "NOT_APPLICABLE",
+    "qgraphicsview_renderer_equivalence": "NOT_MEASURED",
+    "editor_memory_soak": "covered_by_separate_controlled_report",
+    "cupy_official_adoption": "NOT_APPLICABLE"
+  },
+  "limitations": [
+    "This report proves real CUDA transport, allocation, workload and telemetry in the controlled container.",
+    "The editor performance soak uses QGraphicsView with QT_QPA_PLATFORM=offscreen and QT_OPENGL=software; it does not claim GPU frame or renderer equivalence.",
+    "The workload is a driver-level qualification and is not a substitute for a native engine frame-time budget."
+  ],
+  "reexecution_condition": "Repeat only if the runner, Docker image/digest, GPU driver, controlled limits or the editor render path changes."
+}

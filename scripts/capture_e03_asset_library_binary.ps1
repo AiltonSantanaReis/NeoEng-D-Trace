@@ -429,6 +429,28 @@ try {
             throw "Mask Viewer was not exposed by portable binary; observed windows: $($titles -join ' | ')"
         }
         $records.mask_viewer = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer.png")
+        # Exercise the visible processing modes with the image loaded.  These
+        # are native clicks in the dialog and each capture is kept separate so
+        # a later mode cannot hide an earlier visual result.
+        [NeoEngE03Capture]::Focus($mask.Handle)
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 320, 130)
+        Start-Sleep -Milliseconds 900
+        $records.mask_viewer_perfeito = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-perfeito.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 500, 130)
+        Start-Sleep -Milliseconds 900
+        $records.mask_viewer_aprim = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-aprim.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 670, 130)
+        Start-Sleep -Milliseconds 1200
+        $records.mask_viewer_grabcut = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-grabcut.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 320, 285)
+        Start-Sleep -Milliseconds 500
+        $records.mask_viewer_sobel = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-sobel.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 500, 285)
+        Start-Sleep -Milliseconds 500
+        $records.mask_viewer_canny = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-canny.png")
+        [NeoEngE03Capture]::ClickWindow($mask.Handle, 670, 285)
+        Start-Sleep -Milliseconds 500
+        $records.mask_viewer_laplaciano = Save-Capture $mask.Handle (Join-Path $OutputDirectory "04-mask-viewer-laplaciano.png")
     }
     [NeoEngE03Capture]::Focus($editor.Handle)
     Start-Sleep -Milliseconds 800
@@ -631,6 +653,14 @@ try {
         [NeoEngE03Capture]::ClickWindow($editor.Handle, 3400, 1315)
         Start-Sleep -Milliseconds 900
         $records.vector_contour_created = Save-Capture $editor.Handle (Join-Path $OutputDirectory "13-vector-contour-created.png")
+        # Persist the newly created vector scene object through the same
+        # toolbar path a user uses, then reload it to prove the round-trip.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 557, 90)
+        Start-Sleep -Milliseconds 800
+        $records.vector_contour_saved = Save-Capture $editor.Handle (Join-Path $OutputDirectory "14-vector-contour-saved.png")
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 708, 90)
+        Start-Sleep -Milliseconds 1000
+        $records.vector_contour_reloaded = Save-Capture $editor.Handle (Join-Path $OutputDirectory "15-vector-contour-reloaded.png")
     }
     if ($tilesetFlow) {
         Enter-AdvancedTool $editor.Handle 310
@@ -852,11 +882,11 @@ try {
         # Select the large receiver through the real canvas, as a user would
         # before editing its persisted material in the inspector.
         # The PrintWindow output is commonly previewed downscaled, while the
-        # native surface is DPI-aware (3866x2090 on the capture host).  Use a
-        # point well inside the receiver's native bounds rather than a point
-        # inferred from the resized preview; this keeps the test deterministic
-        # and proves the real user click reaches the graphics item.
-        [NeoEngE03Capture]::ClickWindow($editor.Handle, 1760, 860)
+        # native surface is DPI-aware (3866x2090 on the capture host).  The
+        # left receiver occupies the native rectangle around x=826..1484,
+        # y=308..1234; click its blue center so the real user action reaches
+        # the graphics item instead of the empty gutter between objects.
+        [NeoEngE03Capture]::ClickWindow($editor.Handle, 1300, 780)
         Start-Sleep -Milliseconds 700
         $records.material_selection = Save-Capture $editor.Handle (Join-Path $OutputDirectory "10-material-selection.png")
         # Material is an explicit inspector category. Select it after the

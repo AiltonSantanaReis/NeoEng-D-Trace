@@ -11,7 +11,7 @@ from pathlib import Path
 
 from PySide6.QtWidgets import QApplication
 
-from scripts.benchmark_p2d_05_o2_preview_reuse import (
+from scripts.benchmark_p2d_05_o2_preview import (
     _Harness,
     _operation,
     _representative_document,
@@ -59,9 +59,14 @@ def _profile(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--expected-source-commit",
+        default=O2_HEAD,
+        help="Expected source commit for the profile run.",
+    )
     args = parser.parse_args()
-    if _git_head() != O2_HEAD:
-        parser.error("O-2 profiles must run at the accepted O-2 HEAD")
+    if _git_head() != args.expected_source_commit:
+        parser.error("profiles must run at the expected source commit")
     os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     application = QApplication.instance() or QApplication([])
     profiles = (

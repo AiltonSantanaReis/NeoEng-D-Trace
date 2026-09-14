@@ -906,7 +906,11 @@ class MagneticLassoTool(BaseTool):
                 daemon=True,
             )
             self._path_threads[request_id] = thread
-            thread.start()
+            # Give callers one Qt turn to attach observers before the short
+            # budget worker can publish its terminal payload.  The worker's
+            # deadline still starts at construction, so this only closes the
+            # observer-registration race; it does not extend the timeout.
+            QTimer.singleShot(0, thread.start)
             return
         if self._path_timeout_timer is not None:
             self._path_timeout_timer.start(self._path_timeout_ms)

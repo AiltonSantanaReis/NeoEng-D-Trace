@@ -324,6 +324,11 @@ class ScenarioEditorWindow(QMainWindow):
         self.update_language(language)
         self.refresh()
 
+    def _ui_text(self, portuguese: str, english: str) -> str:
+        """Return user-facing copy for the active editor language."""
+
+        return portuguese if self.current_lang == "pt" else english
+
     def _add_toolbar_menu(
         self, key: str, label: str, actions: tuple[QAction, ...]
     ) -> None:
@@ -426,15 +431,26 @@ class ScenarioEditorWindow(QMainWindow):
                         recovery if recovery.is_file() else None
                     )
                     self._show_pending_document(
-                        "Saved scene could not be validated. "
-                        + (
-                            "Use Recover Last Valid."
-                            if self._pending_recovery_path
-                            else "Repair the scene file before reopening."
+                        self._ui_text(
+                            "O cenário salvo não pôde ser validado. "
+                            + (
+                                "Use Recuperar Último Válido."
+                                if self._pending_recovery_path
+                                else "Corrija o arquivo do cenário antes de reabri-lo."
+                            ),
+                            "Saved scene could not be validated. "
+                            + (
+                                "Use Recover Last Valid."
+                                if self._pending_recovery_path
+                                else "Repair the scene file before reopening."
+                            ),
                         )
                     )
                     self.status_label.setText(
-                        "Scenario unavailable: invalid saved document"
+                        self._ui_text(
+                            "Cenário indisponível: documento salvo inválido",
+                            "Scenario unavailable: invalid saved document",
+                        )
                     )
                     return
                 if isinstance(candidate, SceneAuthoringDocumentV1):
@@ -444,10 +460,20 @@ class ScenarioEditorWindow(QMainWindow):
                         recovery if recovery.is_file() else None
                     )
                     self._show_pending_document(
-                        "Schema V1 detected. Choose Upgrade V1 to V2 to edit. "
-                        "The V1 file remains unchanged until Save."
+                        self._ui_text(
+                            "Esquema V1 detectado. Escolha Atualizar V1 para V2 "
+                            "para editar. O arquivo V1 permanece inalterado até "
+                            "Salvar.",
+                            "Schema V1 detected. Choose Upgrade V1 to V2 to edit. "
+                            "The V1 file remains unchanged until Save.",
+                        )
                     )
-                    self.status_label.setText("Scenario requires explicit V1 upgrade")
+                    self.status_label.setText(
+                        self._ui_text(
+                            "O cenário requer atualização explícita para V2",
+                            "Scenario requires explicit V1 upgrade",
+                        )
+                    )
                     return
                 raise
         if document is None:
@@ -830,25 +856,44 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _upgrade_professional(self) -> bool:
         if self._pending_v1_document is None:
-            self.status_label.setText("No V1 scenario is waiting for upgrade")
+            self.status_label.setText(
+                self._ui_text(
+                    "Nenhum cenário V1 aguarda atualização",
+                    "No V1 scenario is waiting for upgrade",
+                )
+            )
             return False
         answer = QMessageBox.question(
             self,
-            "Upgrade scenario schema",
-            "Upgrade this V1 scenario to V2 in memory? "
-            "The V1 file will remain unchanged until you save.",
+            self._ui_text("Atualizar esquema do cenário", "Upgrade scenario schema"),
+            self._ui_text(
+                "Atualizar este cenário V1 para V2 na memória? "
+                "O arquivo V1 permanecerá inalterado até você salvar.",
+                "Upgrade this V1 scenario to V2 in memory? "
+                "The V1 file will remain unchanged until you save.",
+            ),
         )
         if answer != QMessageBox.StandardButton.Yes:
             return False
         candidate = self._pending_v1_document
         upgraded = upgrade_scene_authoring_document(candidate)
         self._build_professional_viewport(upgraded, mark_unsaved=True)
-        self.status_label.setText("Scenario upgraded to V2 — save to persist")
+        self.status_label.setText(
+            self._ui_text(
+                "Cenário atualizado para V2 — salve para persistir",
+                "Scenario upgraded to V2 — save to persist",
+            )
+        )
         return True
 
     def _recover_professional(self) -> bool:
         if self.professional_scene_path is None or self._pending_recovery_path is None:
-            self.status_label.setText("No recoverable scenario is available")
+            self.status_label.setText(
+                self._ui_text(
+                    "Nenhum cenário recuperável está disponível",
+                    "No recoverable scenario is available",
+                )
+            )
             return False
         try:
             candidate = load_scene_authoring_recovery(
@@ -856,7 +901,9 @@ class ScenarioEditorWindow(QMainWindow):
             )
         except (OSError, ValueError, ProjectPersistenceError) as exc:
             self.status_label.setText(
-                "Scenario recovery failed: "
+                self._ui_text(
+                    "Falha na recuperação do cenário: ", "Scenario recovery failed: "
+                )
                 + user_error_message(
                     exc, operation="recovery", language=self.current_lang
                 )
@@ -866,22 +913,39 @@ class ScenarioEditorWindow(QMainWindow):
             self._pending_v1_document = candidate
             self._pending_recovery_path = None
             self._show_pending_document(
-                "Recovered V1 scenario is ready. Choose Upgrade V1 to V2; "
-                "the recovered file will not replace the damaged file until Save."
+                self._ui_text(
+                    "O cenário V1 recuperado está pronto. Escolha Atualizar V1 "
+                    "para V2; o arquivo recuperado não substituirá o arquivo "
+                    "danificado até Salvar.",
+                    "Recovered V1 scenario is ready. Choose Upgrade V1 to V2; "
+                    "the recovered file will not replace the damaged file until Save.",
+                )
             )
             self.status_label.setText(
-                "Recovered V1 scenario — explicit upgrade required"
+                self._ui_text(
+                    "Cenário V1 recuperado — atualização explícita necessária",
+                    "Recovered V1 scenario — explicit upgrade required",
+                )
             )
             return True
         self._build_professional_viewport(candidate, mark_unsaved=True)
         self.status_label.setText(
-            "Last valid scenario recovered — save to replace the damaged file"
+            self._ui_text(
+                "Último cenário válido recuperado — salve para substituir o "
+                "arquivo danificado",
+                "Last valid scenario recovered — save to replace the damaged file",
+            )
         )
         return True
 
     def _save_professional(self) -> bool:
         if self.professional_session is None or self.professional_scene_path is None:
-            self.status_label.setText("Create a scenario before saving")
+            self.status_label.setText(
+                self._ui_text(
+                    "Crie um cenário antes de salvar",
+                    "Create a scenario before saving",
+                )
+            )
             return False
         if self._temporary_project_path is not None:
             return self._save_new_project_as()
@@ -896,17 +960,27 @@ class ScenarioEditorWindow(QMainWindow):
             return True
         except (OSError, ValueError, ProjectPersistenceError) as exc:
             self.status_label.setText(
-                "Scenario save failed: "
+                self._ui_text("Falha ao salvar o cenário: ", "Scenario save failed: ")
                 + user_error_message(exc, operation="save", language=self.current_lang)
             )
             return False
 
     def _load_professional(self) -> bool:
         if self.professional_session is None or self.professional_scene_path is None:
-            self.status_label.setText("Save a project before reloading the scenario")
+            self.status_label.setText(
+                self._ui_text(
+                    "Salve um projeto antes de recarregar o cenário",
+                    "Save a project before reloading the scenario",
+                )
+            )
             return False
         if not self.professional_scene_path.is_file():
-            self.status_label.setText("No saved scenario exists yet")
+            self.status_label.setText(
+                self._ui_text(
+                    "Ainda não existe um cenário salvo",
+                    "No saved scenario exists yet",
+                )
+            )
             return False
         try:
             document = self._load_professional_document(self.professional_scene_path)
@@ -943,15 +1017,26 @@ class ScenarioEditorWindow(QMainWindow):
             ):
                 recovery = scene_authoring_recovery_path(self.professional_scene_path)
                 failure_status = (
-                    "Scenario reload failed: "
+                    self._ui_text(
+                        "Falha ao recarregar o cenário: ",
+                        "Scenario reload failed: ",
+                    )
                     + user_error_message(
                         exc, operation="reload", language=self.current_lang
                     )
                     + " "
                     + (
-                        "Use Recover Last Valid."
+                        (
+                            "Use Recuperar Último Válido."
+                            if self.current_lang == "pt"
+                            else "Use Recover Last Valid."
+                        )
                         if recovery.is_file()
-                        else "Repair the saved scenario before reloading."
+                        else (
+                            "Corrija o cenário salvo antes de recarregá-lo."
+                            if self.current_lang == "pt"
+                            else "Repair the saved scenario before reloading."
+                        )
                     )
                 )
                 self._pending_recovery_path = recovery if recovery.is_file() else None
@@ -980,13 +1065,20 @@ class ScenarioEditorWindow(QMainWindow):
             if isinstance(candidate, SceneAuthoringDocumentV1):
                 self._pending_v1_document = candidate
                 self.status_label.setText(
-                    "Scenario reload requires explicit V1 upgrade; "
-                    "the saved V1 file remains unchanged."
+                    self._ui_text(
+                        "O recarregamento requer atualização explícita de V1; "
+                        "o arquivo V1 salvo permanece inalterado.",
+                        "Scenario reload requires explicit V1 upgrade; "
+                        "the saved V1 file remains unchanged.",
+                    )
                 )
                 self.refresh()
                 return False
             self.status_label.setText(
-                "Scenario reload failed: "
+                self._ui_text(
+                    "Falha ao recarregar o cenário: ",
+                    "Scenario reload failed: ",
+                )
                 + user_error_message(
                     exc, operation="reload", language=self.current_lang
                 )
@@ -995,13 +1087,21 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _reset_professional(self, *, confirm: bool = True) -> bool:
         if self._professional_project is None or self.professional_session is None:
-            self.status_label.setText("Save a project before resetting the scenario")
+            self.status_label.setText(
+                self._ui_text(
+                    "Salve um projeto antes de redefinir o cenário",
+                    "Save a project before resetting the scenario",
+                )
+            )
             return False
         if confirm and self.professional_session.is_dirty:
             answer = QMessageBox.question(
                 self,
-                "Reset scenario",
-                "Discard unsaved professional scenario changes?",
+                self._ui_text("Redefinir cenário", "Reset scenario"),
+                self._ui_text(
+                    "Descartar as alterações não salvas do cenário profissional?",
+                    "Discard unsaved professional scenario changes?",
+                ),
             )
             if answer != QMessageBox.StandardButton.Yes:
                 return False
@@ -1014,12 +1114,22 @@ class ScenarioEditorWindow(QMainWindow):
         self.professional_session.clear_selection()
         if self.professional_viewport is not None:
             self.professional_viewport.sync()
-        self.status_label.setText("Scenario reset from project")
+        self.status_label.setText(
+            self._ui_text(
+                "Cenário redefinido a partir do projeto",
+                "Scenario reset from project",
+            )
+        )
         return True
 
     def _export_professional(self) -> bool:
         if self.professional_session is None or self._professional_project is None:
-            self.status_label.setText("Save a project before exporting the scenario")
+            self.status_label.setText(
+                self._ui_text(
+                    "Salve um projeto antes de exportar o cenário",
+                    "Save a project before exporting the scenario",
+                )
+            )
             return False
         target_value = self.export_target_combo.currentData()
         target: SceneExportTarget = (
@@ -1037,14 +1147,25 @@ class ScenarioEditorWindow(QMainWindow):
                 target=target,
                 source_document_path=self.professional_scene_path,
             )
+            target_label = {
+                "generic": "genérica",
+                "godot": "Godot",
+                "unity": "Unity",
+            }[target]
             self.status_label.setText(
-                f"Scenario {target} export written from active document: "
-                f"{destination.name}"
+                self._ui_text(
+                    f"Exportação {target_label} do cenário gravada a partir do "
+                    f"documento ativo: {destination.name}",
+                    f"Scenario {target} export written from active document: "
+                    f"{destination.name}",
+                )
             )
             return True
         except (OSError, ValueError, ProjectPersistenceError) as exc:
             self.status_label.setText(
-                "Scenario export failed: "
+                self._ui_text(
+                    "Falha ao exportar o cenário: ", "Scenario export failed: "
+                )
                 + user_error_message(
                     exc, operation="export", language=self.current_lang
                 )
@@ -1055,13 +1176,21 @@ class ScenarioEditorWindow(QMainWindow):
         """Export one validated package for the complete authored composition."""
 
         if self.professional_session is None or self._professional_project is None:
-            self.status_label.setText("Save a project before exporting the composition")
+            self.status_label.setText(
+                self._ui_text(
+                    "Salve um projeto antes de exportar a composição",
+                    "Save a project before exporting the composition",
+                )
+            )
             return False
         scene_path = self.professional_scene_path
         project_root = self._professional_project.parent
         if scene_path is None or not scene_path.is_file():
             self.status_label.setText(
-                "Save the scenario before exporting the composition"
+                self._ui_text(
+                    "Salve o cenário antes de exportar a composição",
+                    "Save the scenario before exporting the composition",
+                )
             )
             return False
         runtime_bundle = project_root / "assets" / "runtime" / "adapters.json"
@@ -1084,23 +1213,35 @@ class ScenarioEditorWindow(QMainWindow):
             manifest = build_composition_package(inputs, destination)
         except (CompositionExportError, OSError, ValueError) as exc:
             self.status_label.setText(
-                "Composition export failed: "
+                self._ui_text(
+                    "Falha ao exportar a composição: ",
+                    "Composition export failed: ",
+                )
                 + user_error_message(
                     exc, operation="export", language=self.current_lang
                 )
             )
             return False
         runtime_note = (
-            " + runtime adapters"
+            (
+                " + adaptadores de runtime"
+                if self.current_lang == "pt"
+                else " + runtime adapters"
+            )
             if any(
                 item["kind"] == "runtime-adapters" for item in manifest["components"]
             )
             else ""
         )
         self.status_label.setText(
-            "Composition exported ("
-            f"{len(manifest['components'])} components{runtime_note}): "
-            f"{destination.name}"
+            self._ui_text(
+                "Composição exportada ("
+                f"{len(manifest['components'])} componentes{runtime_note}): "
+                f"{destination.name}",
+                "Composition exported ("
+                f"{len(manifest['components'])} components{runtime_note}): "
+                f"{destination.name}",
+            )
         )
         return True
 
@@ -1372,11 +1513,13 @@ class ScenarioEditorWindow(QMainWindow):
 
     def _undo_professional(self) -> None:
         if self.professional_viewport is not None and self.professional_viewport.undo():
-            self.status_label.setText("Undo applied")
+            self.status_label.setText(
+                self._ui_text("Desfazer aplicado", "Undo applied")
+            )
 
     def _redo_professional(self) -> None:
         if self.professional_viewport is not None and self.professional_viewport.redo():
-            self.status_label.setText("Redo applied")
+            self.status_label.setText(self._ui_text("Refazer aplicado", "Redo applied"))
 
     def refresh(self) -> None:
         available = self.authoring.is_available
@@ -1714,6 +1857,11 @@ class ScenarioEditorWindow(QMainWindow):
             self.sequence_panel.stop()
         self._professional_initial_focus_applied = False
         if self.professional_session is not None and self.professional_session.is_dirty:
-            self.status_label.setText("Unsaved scenario changes preserved")
+            self.status_label.setText(
+                self._ui_text(
+                    "Alterações não salvas do cenário preservadas",
+                    "Unsaved scenario changes preserved",
+                )
+            )
         self.hide()
         event.ignore()

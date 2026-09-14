@@ -65,6 +65,76 @@ MAIN_WINDOW_TRANSLATIONS: dict[str, dict[str, Any]] = {
         "text_files": "Text Files (*.txt)",
         "fit_view": "Fit View",
         "view_settings": "View Settings",
+        "unity_integration": "Unity Integration...",
+        "unity_integration_dialog": "Unity integration and licensing flow",
+        "unity_integration_intro": (
+            "NeoEng-D-Trace does not activate or store Unity licenses. "
+            "Sign in and manage the plan in Unity Hub; this dialog only "
+            "helps locate the Hub and Editor."
+        ),
+        "unity_prerequisites": "Prerequisites",
+        "unity_hub": "Unity Hub",
+        "unity_editor": "Unity Editor",
+        "unity_login_license": "Login / license",
+        "unity_external_management": (
+            "Managed by Unity Hub — not verified by NeoEng-D-Trace."
+        ),
+        "unity_hub_path": "Unity Hub executable",
+        "unity_editor_path": "Unity Editor executable",
+        "unity_paths": "Executable locations",
+        "unity_select_hub": "Select Unity Hub",
+        "unity_select_editor": "Select Unity Editor",
+        "unity_executable_filter": "Executables (*.exe);;All files (*)",
+        "unity_browse": "Browse...",
+        "unity_clear": "Clear",
+        "unity_actions": "Actions",
+        "unity_refresh": "Refresh diagnosis",
+        "unity_open_hub": "Open Unity Hub",
+        "unity_open_id": "Open Unity ID",
+        "unity_license_help": "License help",
+        "unity_personal_flow": (
+            "Personal flow: sign in to Unity Hub, then use "
+            "Settings > Licenses > Add license > Get a free personal license."
+        ),
+        "unity_paid_flow": (
+            "Paid or named-user plans are managed by the Unity account and Hub "
+            "flow; NeoEng-D-Trace does not validate entitlements."
+        ),
+        "unity_not_configured": "Not configured — automatic discovery will be used.",
+        "unity_available": "Found: {path}",
+        "unity_missing": "Not found: {path}",
+        "unity_invalid": "Invalid executable: {path}",
+        "unity_hub_not_found_title": "Unity Hub not found",
+        "unity_hub_not_found_message": (
+            "Select the Unity Hub executable or install it before using the "
+            "external login and licensing flow."
+        ),
+        "unity_invalid_executable_title": "Invalid Unity executable",
+        "unity_invalid_hub_message": (
+            "Choose the Unity Hub executable (Unity Hub.exe)."
+        ),
+        "unity_invalid_editor_message": (
+            "Choose the Unity Editor executable (Unity.exe)."
+        ),
+        "unity_open_failed_title": "Could not open Unity Hub",
+        "unity_open_failed_message": "The configured executable could not be started.",
+        "unity_hub_opened": (
+            "Unity Hub opened. Complete login and license management there."
+        ),
+        "unity_url_failed_title": "Could not open link",
+        "unity_url_failed_message": (
+            "Set a default browser to open the official Unity page."
+        ),
+        "unity_saved": (
+            "Unity paths saved locally. Login and licensing remain managed by "
+            "Unity Hub."
+        ),
+        "unity_config_no_secret": (
+            "Only executable paths are stored in local application state; "
+            "no credentials, tokens or license files are read."
+        ),
+        "ok": "OK",
+        "cancel": "Cancel",
         "grid": "Grid",
         "snap": "Snap",
         "gizmo": "Gizmo",
@@ -151,6 +221,10 @@ MAIN_WINDOW_TRANSLATIONS: dict[str, dict[str, Any]] = {
             "scenario_reset": "Reset the scenario from the project",
             "scenario_export": "Export the scenario runtime JSON",
             "settings": "Open viewport and application settings",
+            "unity_integration": (
+                "Configure Unity Hub and Editor paths; login and licensing stay "
+                "in Unity Hub"
+            ),
             "language": "Choose the application language",
         },
     },
@@ -216,6 +290,78 @@ MAIN_WINDOW_TRANSLATIONS: dict[str, dict[str, Any]] = {
         "text_files": "Arquivos de Texto (*.txt)",
         "fit_view": "Ajustar Visão",
         "view_settings": "Configurações da Visualização",
+        "unity_integration": "Integração do Unity...",
+        "unity_integration_dialog": "Integração do Unity e fluxo de licença",
+        "unity_integration_intro": (
+            "O NeoEng-D-Trace não ativa nem armazena licenças Unity. "
+            "Faça login e gerencie o plano no Unity Hub; este diálogo apenas "
+            "ajuda a localizar o Hub e o Editor."
+        ),
+        "unity_prerequisites": "Pré-requisitos",
+        "unity_hub": "Unity Hub",
+        "unity_editor": "Editor Unity",
+        "unity_login_license": "Login / licença",
+        "unity_external_management": (
+            "Gerenciado pelo Unity Hub — não verificado pelo NeoEng-D-Trace."
+        ),
+        "unity_hub_path": "Executável do Unity Hub",
+        "unity_editor_path": "Executável do Editor Unity",
+        "unity_paths": "Localização dos executáveis",
+        "unity_select_hub": "Selecionar Unity Hub",
+        "unity_select_editor": "Selecionar Editor Unity",
+        "unity_executable_filter": "Executáveis (*.exe);;Todos os arquivos (*)",
+        "unity_browse": "Localizar...",
+        "unity_clear": "Limpar",
+        "unity_actions": "Ações",
+        "unity_refresh": "Atualizar diagnóstico",
+        "unity_open_hub": "Abrir Unity Hub",
+        "unity_open_id": "Abrir Unity ID",
+        "unity_license_help": "Ajuda sobre licenças",
+        "unity_personal_flow": (
+            "Fluxo Personal: faça login no Unity Hub e use "
+            "Configurações > Licenses > Add license > Get a free personal license."
+        ),
+        "unity_paid_flow": (
+            "Planos pagos ou named user são gerenciados pela conta Unity e pelo "
+            "Hub; o NeoEng-D-Trace não valida entitlements."
+        ),
+        "unity_not_configured": "Não configurado — será usada a detecção automática.",
+        "unity_available": "Encontrado: {path}",
+        "unity_missing": "Não encontrado: {path}",
+        "unity_invalid": "Executável inválido: {path}",
+        "unity_hub_not_found_title": "Unity Hub não encontrado",
+        "unity_hub_not_found_message": (
+            "Selecione o executável do Unity Hub ou instale-o antes de usar o "
+            "fluxo externo de login e licenciamento."
+        ),
+        "unity_invalid_executable_title": "Executável Unity inválido",
+        "unity_invalid_hub_message": (
+            "Escolha o executável do Unity Hub (Unity Hub.exe)."
+        ),
+        "unity_invalid_editor_message": (
+            "Escolha o executável do Editor Unity (Unity.exe)."
+        ),
+        "unity_open_failed_title": "Não foi possível abrir o Unity Hub",
+        "unity_open_failed_message": (
+            "Não foi possível iniciar o executável configurado."
+        ),
+        "unity_hub_opened": (
+            "O Unity Hub foi aberto. Conclua o login e o gerenciamento de licença lá."
+        ),
+        "unity_url_failed_title": "Não foi possível abrir o link",
+        "unity_url_failed_message": (
+            "Defina um navegador padrão para abrir a página oficial do Unity."
+        ),
+        "unity_saved": (
+            "Os caminhos do Unity foram salvos localmente. Login e licenciamento "
+            "continuam sob responsabilidade do Unity Hub."
+        ),
+        "unity_config_no_secret": (
+            "Somente caminhos de executáveis são salvos no estado local; "
+            "nenhuma credencial, token ou licença é lida."
+        ),
+        "ok": "OK",
+        "cancel": "Cancelar",
         "grid": "Grade",
         "snap": "Snap",
         "gizmo": "Eixo",
@@ -304,6 +450,10 @@ MAIN_WINDOW_TRANSLATIONS: dict[str, dict[str, Any]] = {
             "scenario_reset": "Redefinir o cenário a partir do projeto",
             "scenario_export": "Exportar o JSON de runtime do cenário",
             "settings": "Abrir configurações da viewport e da aplicação",
+            "unity_integration": (
+                "Configurar caminhos do Unity Hub e do Editor; login e licença "
+                "ficam no Hub"
+            ),
             "language": "Escolher o idioma da aplicação",
         },
     },

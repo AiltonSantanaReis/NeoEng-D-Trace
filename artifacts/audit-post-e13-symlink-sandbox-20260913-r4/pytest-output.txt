@@ -1,0 +1,9 @@
+COMMAND
+/usr/local/bin/python -m pytest /tmp/test_integration_sync.py -q -p no:cacheprovider --rootdir=/tmp --confcutdir=/tmp --basetemp=/tmp/pytest-symlink-audit --junitxml=/output/symlink-junit.xml
+EXIT_CODE
+0
+STDOUT
+...............................                                          [100%]
+31 passed in 0.51s
+
+STDERR

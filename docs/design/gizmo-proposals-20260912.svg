@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1180" viewBox="0 0 1800 1180">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#081722"/>
+      <stop offset="1" stop-color="#122c3a"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#17394b"/>
+      <stop offset="1" stop-color="#0e2431"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".42"/>
+    </filter>
+    <marker id="arrow-red" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#ff6f78"/></marker>
+    <marker id="arrow-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#65e59a"/></marker>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#58b9ff"/></marker>
+    <style>
+      .title{font:700 36px 'Segoe UI',Arial,sans-serif;fill:#e8fbff;letter-spacing:1px}
+      .subtitle{font:400 18px 'Segoe UI',Arial,sans-serif;fill:#a9cfda}
+      .panel-title{font:700 23px 'Segoe UI',Arial,sans-serif;fill:#e8fbff}
+      .body{font:400 16px 'Segoe UI',Arial,sans-serif;fill:#b9d7df}
+      .token{font:600 14px 'Segoe UI',Arial,sans-serif;fill:#081722}
+      .axis{font:700 18px 'Segoe UI',Arial,sans-serif}
+      .caption{font:600 15px 'Segoe UI',Arial,sans-serif;fill:#d9f6fb}
+    </style>
+  </defs>
+  <rect width="1800" height="1180" fill="url(#bg)"/>
+  <circle cx="1640" cy="80" r="220" fill="#2ed4e6" opacity=".06"/>
+  <circle cx="120" cy="1040" r="260" fill="#a884ff" opacity=".05"/>
+  <text x="80" y="78" class="title">GIZMO · PROPOSTAS DE LINGUAGEM VISUAL</text>
+  <text x="80" y="112" class="subtitle">NeoEng-D-Trace · vetor nativo, estados claros, escala em tela e compatibilidade 2D/2.5D</text>
+
+  <g transform="translate(70,160)" filter="url(#shadow)">
+    <rect width="510" height="850" rx="18" fill="url(#panel)" stroke="#2d6174" stroke-width="2"/>
+    <text x="34" y="55" class="panel-title">A · Studio Axis 2D</text>
+    <text x="34" y="86" class="body">Transformação primária para sprites, formas e layers</text>
+    <rect x="118" y="245" width="260" height="176" rx="4" fill="#102733" stroke="#9bd8e2" stroke-width="2" stroke-dasharray="8 8" opacity=".9"/>
+    <rect x="160" y="275" width="176" height="116" rx="3" fill="#276079" opacity=".58"/>
+    <line x1="248" y1="333" x2="423" y2="333" stroke="#ff6f78" stroke-width="9" stroke-linecap="round" marker-end="url(#arrow-red)"/>
+    <line x1="248" y1="333" x2="248" y2="170" stroke="#65e59a" stroke-width="9" stroke-linecap="round" marker-end="url(#arrow-green)"/>
+    <circle cx="248" cy="333" r="18" fill="#162d42" stroke="#e8fbff" stroke-width="4"/>
+    <circle cx="248" cy="333" r="6" fill="#a884ff"/>
+    <path d="M169 260 A112 112 0 1 1 332 254" fill="none" stroke="#58d9e7" stroke-width="6" stroke-linecap="round"/>
+    <path d="M338 260 l-19 2 l11 14" fill="#58d9e7"/>
+    <rect x="357" y="442" width="25" height="25" rx="5" fill="#f6c65b" stroke="#fff0af" stroke-width="3"/>
+    <rect x="110" y="435" width="300" height="190" fill="none" stroke="#8fc6d2" stroke-width="2" stroke-dasharray="5 8"/>
+    <circle cx="248" cy="333" r="44" fill="none" stroke="#a884ff" stroke-width="2" stroke-dasharray="3 7" opacity=".8"/>
+    <text x="430" y="326" class="axis" fill="#ff6f78">X</text>
+    <text x="258" y="158" class="axis" fill="#65e59a">Y</text>
+    <text x="258" y="363" class="axis" fill="#a884ff">PIVOT</text>
+    <text x="34" y="690" class="caption">Estados</text>
+    <rect x="34" y="712" width="92" height="28" rx="14" fill="#2ed4e6"/><text x="52" y="731" class="token">ATIVO</text>
+    <rect x="136" y="712" width="108" height="28" rx="14" fill="#65e59a"/><text x="151" y="731" class="token">HOVER</text>
+    <rect x="254" y="712" width="112" height="28" rx="14" fill="#f6c65b"/><text x="268" y="731" class="token">SNAP</text>
+    <text x="34" y="785" class="body">Recomendado como padrão do viewport 2D.</text>
+  </g>
+
+  <g transform="translate(645,160)" filter="url(#shadow)">
+    <rect width="510" height="850" rx="18" fill="url(#panel)" stroke="#2d6174" stroke-width="2"/>
+    <text x="34" y="55" class="panel-title">B · Camera / Light Handle</text>
+    <text x="34" y="86" class="body">Direção e enquadramento sem esconder a composição</text>
+    <rect x="62" y="220" width="386" height="236" rx="8" fill="#0b1d28" stroke="#57d5e6" stroke-width="4" stroke-dasharray="12 8"/>
+    <rect x="82" y="240" width="346" height="196" rx="4" fill="#1b4658" opacity=".65" stroke="#a7eaf1" stroke-dasharray="4 6"/>
+    <line x1="255" y1="338" x2="255" y2="145" stroke="#d8f8fc" stroke-width="3"/>
+    <circle cx="255" cy="338" r="23" fill="#122f40" stroke="#f6c65b" stroke-width="4"/>
+    <path d="M255 157 L239 177 L271 177 Z" fill="#58d9e7"/>
+    <circle cx="255" cy="112" r="16" fill="#f6c65b" stroke="#fff0af" stroke-width="3"/>
+    <path d="M255 338 L405 285" stroke="#a884ff" stroke-width="4" marker-end="url(#arrow-blue)"/>
+    <path d="M255 338 A160 160 0 0 1 405 285" fill="none" stroke="#a884ff" stroke-width="3" stroke-dasharray="7 8"/>
+    <path d="M255 338 L124 390" stroke="#ff6f78" stroke-width="5" marker-end="url(#arrow-red)"/>
+    <text x="272" y="108" class="axis" fill="#f6c65b">ROTATE</text>
+    <text x="355" y="278" class="axis" fill="#58b9ff">TARGET</text>
+    <text x="74" y="500" class="caption">Safe area + target + rotation handle</text>
+    <text x="34" y="610" class="body">O frame usa cyan discreto; o alvo usa</text>
+    <text x="34" y="636" class="body">violeta e a direção usa amarelo.</text>
+    <text x="34" y="710" class="caption">Aplicação</text>
+    <text x="34" y="742" class="body">Câmera, luz direcional e VFX orientável.</text>
+    <text x="34" y="785" class="body">O mesmo padrão semântico, com handles próprios.</text>
+  </g>
+
+  <g transform="translate(1220,160)" filter="url(#shadow)">
+    <rect width="510" height="850" rx="18" fill="url(#panel)" stroke="#2d6174" stroke-width="2"/>
+    <text x="34" y="55" class="panel-title">C · Hybrid Depth</text>
+    <text x="34" y="86" class="body">Extensão para 2.5D/3D; não substituir o gizmo 2D</text>
+    <path d="M100 570 L352 570 L410 500 L158 500 Z" fill="#153e51" stroke="#6db5c8" stroke-width="2" opacity=".9"/>
+    <path d="M158 500 L158 395 L410 395 L410 500" fill="#1d5368" opacity=".55" stroke="#72e3ef" stroke-width="2"/>
+    <line x1="255" y1="500" x2="445" y2="500" stroke="#ff6f78" stroke-width="8" marker-end="url(#arrow-red)"/>
+    <line x1="255" y1="500" x2="255" y2="300" stroke="#65e59a" stroke-width="8" marker-end="url(#arrow-green)"/>
+    <line x1="255" y1="500" x2="145" y2="620" stroke="#58b9ff" stroke-width="8" marker-end="url(#arrow-blue)"/>
+    <circle cx="255" cy="500" r="17" fill="#a884ff" stroke="#e8fbff" stroke-width="4"/>
+    <path d="M154 458 A104 104 0 1 1 351 432" fill="none" stroke="#58d9e7" stroke-width="6"/>
+    <path d="M151 458 l19 1 l-12 14" fill="#58d9e7"/>
+    <text x="454" y="495" class="axis" fill="#ff6f78">X</text>
+    <text x="265" y="288" class="axis" fill="#65e59a">Y</text>
+    <text x="120" y="638" class="axis" fill="#58b9ff">Z / DEPTH</text>
+    <text x="34" y="710" class="caption">Somente no modo híbrido</text>
+    <text x="34" y="744" class="body">Eixos, plano de profundidade e modo</text>
+    <text x="34" y="770" class="body">de transformação explicitamente marcado.</text>
+  </g>
+  <text x="80" y="1090" class="subtitle">Tokens sugeridos: X #FF6F78 · Y #65E59A · Z #58B9FF · rotação #58D9E7 · pivot #A884FF · snap #F6C65B</text>
+</svg>

@@ -1,0 +1,22 @@
+run_id=POST-E13-OFFICIAL-SUITE-SAFE-HOST-20260913-R4
+status=PASS
+checkout=WORKSPACE
+source_commit=783b385e17506bd898910d4a96fa44db2d7bf1c9
+branch=Ailton/audit-post-e13-scenario-editor-20260912
+command=..\..\.venv\Scripts\python.exe -m pytest -q --junitxml=artifacts/audit-post-e13-official-suite-safe-host-20260913-r4/official-junit.xml
+filters=none
+pytest=9.1.1
+python=3.11.9
+platform=Windows win32
+qt_platform=offscreen
+collected=2632
+passed=2630
+skipped=2
+failures=0
+errors=0
+warnings=0
+duration_seconds=84.68
+symlink_host_execution=false
+symlink_host_policy=SKIP_CONTROLLED_ONLY before symlink_to
+shutdown_native_execution=false
+historical_failures=preserved in prior evidence packages

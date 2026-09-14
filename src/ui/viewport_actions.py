@@ -7,6 +7,7 @@ from typing import Any
 from PySide6.QtGui import QAction
 
 from src.ui.tool_palette_commands import handle_auxiliary_action
+from src.ui.unity_integration_settings import open_unity_integration_settings
 from src.ui.viewport_settings import open_view_settings
 
 
@@ -40,3 +41,11 @@ def install_viewport_actions(window: Any) -> None:
     window.settings_action = QAction("View Settings", window)
     window.settings_action.triggered.connect(lambda: open_view_settings(window))
     window.edit_menu.addAction(window.settings_action)
+
+    window.unity_integration_action = QAction("Unity Integration...", window)
+    window.unity_integration_action.setObjectName("unity_integration_action")
+    window.unity_integration_action.triggered.connect(
+        lambda: open_unity_integration_settings(window)
+    )
+    window.view_menu.addSeparator()
+    window.view_menu.addAction(window.unity_integration_action)

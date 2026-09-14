@@ -1,0 +1,28 @@
+# Sanitized projection of the controlled Windows Sandbox Unity log.
+# Raw local source: output-r8/unity.log (SHA-256 registered in sandbox-attempt.json).
+CreateDirectory '<redacted-path>/AppData/Local/Unity/Caches' failed: the system cannot find the path specified.
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Channel LicenseClient-<redacted> doesn't exist
+Built from '6000.5/staging'; Version is '6000.5.7f1'; Build Type 'Release'
+OS: Windows 11 Enterprise; Language: 'pt'; Physical Memory: 8190 MB
+BatchMode: 1, IsHumanControllingUs: 0, Is64bit: 1
+System architecture: x64
+Process architecture: x64
+Assertion failed on expression: 'SUCCEEDED(hr)'
+Assertion failed on expression: 'wmiOpened'
+[Licensing::Module] Successfully launched the LicensingClient (PId: <redacted>)
+Successfully changed project path to: <redacted-path>
+[Physics::Module] Initialized fallback backend.
+[Package Manager] Connected to IPC stream after 0.1 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-<redacted>"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: <redacted>, path: "<redacted-path>")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Module] Successfully connected to LicensingClient
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Error: Code 404 while processing request (no matching entitlement groups or free entitlements)
+[Licensing::Module] Error: 'com.unity.editor.headless' was not found.
+[Licensing::Module] Licensing Background thread has ended.
+[Licensing::Module] Licensing is initialized.
+No valid Unity Editor license found. Please activate your license.
+Exiting without the bug reporter. Application will terminate with return code 198

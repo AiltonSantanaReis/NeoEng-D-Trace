@@ -1,0 +1,1637 @@
+{
+  "events": [
+    {
+      "action": "open project and scenario editor",
+      "capture": "01-native-loaded.png",
+      "sha256": "935ba51cef50bee31d0101c9d743a54f1dcd1fa40f088870b48dc428aef1e8cf",
+      "state": {
+        "audio_failures": [],
+        "layers": [
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": false,
+        "selected_layer": "layer_default",
+        "sequence": null,
+        "status_label": "Enquadrar Tudo: 1 objeto(s) enquadrado(s) em 1.00x",
+        "timeline_position": 0.0,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    },
+    {
+      "action": "add, rename and reorder depth frame",
+      "capture": "02-native-frame-reorder.png",
+      "sha256": "c2016902014f33766848499b8499492398ee7fed70233a274b317650d15b1d59",
+      "state": {
+        "audio_failures": [],
+        "layers": [
+          {
+            "id": "scenario_layer",
+            "locked": false,
+            "name": "Moldura Meio",
+            "visible": true
+          },
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": false,
+        "selected_layer": "scenario_layer",
+        "sequence": null,
+        "status_label": "Autoria de cen\u00e1rio \u2014 altera\u00e7\u00f5es n\u00e3o salvas",
+        "timeline_position": 0.0,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    },
+    {
+      "action": "apply layer parallax inspector values",
+      "capture": "03-native-parallax-applied.png",
+      "sha256": "5bd1fc1b8198bfe3d4e6f3e41c6c30f4a16f4bccc76ece20ae2975a114b10f91",
+      "state": {
+        "audio_failures": [],
+        "layers": [
+          {
+            "id": "scenario_layer",
+            "locked": false,
+            "name": "Moldura Meio",
+            "visible": true
+          },
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          },
+          {
+            "depth": 0.65,
+            "layer_id": "scenario_layer",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 0.4,
+            "scroll_y": 0.15,
+            "translation_strength": 0.35,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": false,
+        "selected_layer": "scenario_layer",
+        "sequence": null,
+        "status_label": "Paralaxe atualizada \u2014 altera\u00e7\u00f5es n\u00e3o salvas",
+        "timeline_position": 0.0,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    },
+    {
+      "action": "select library asset and place into active frame",
+      "capture": "04-native-asset-placed.png",
+      "sha256": "f81353f3bd06f57fa5a71805d677099fd044bc7b64921ad229029e4f7e16a678",
+      "state": {
+        "audio_failures": [],
+        "layers": [
+          {
+            "id": "scenario_layer",
+            "locked": false,
+            "name": "Moldura Meio",
+            "visible": true
+          },
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          },
+          {
+            "asset_id": "project_image",
+            "id": "project_image",
+            "layer_id": "scenario_layer",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 319.25868725868725,
+                "y": 178.58532818532817,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          },
+          {
+            "depth": 0.65,
+            "layer_id": "scenario_layer",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 0.4,
+            "scroll_y": 0.15,
+            "translation_strength": 0.35,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": false,
+        "selected_layer": "scenario_layer",
+        "sequence": null,
+        "status_label": "Asset colocado: project_image \u2014 altera\u00e7\u00f5es n\u00e3o salvas",
+        "timeline_position": 0.0,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    },
+    {
+      "action": "add timeline clips and seek preview",
+      "capture": "05-native-timeline-seek.png",
+      "sha256": "15f2f81f5e14cc4a4f6c6214b220a34e5dd8e5a004a2888ac65168d37977c66e",
+      "state": {
+        "audio_failures": [],
+        "layers": [
+          {
+            "id": "scenario_layer",
+            "locked": false,
+            "name": "Moldura Meio",
+            "visible": true
+          },
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          },
+          {
+            "asset_id": "project_image",
+            "id": "project_image",
+            "layer_id": "scenario_layer",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 319.25868725868725,
+                "y": 178.58532818532817,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          },
+          {
+            "depth": 0.65,
+            "layer_id": "scenario_layer",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 0.4,
+            "scroll_y": 0.15,
+            "translation_strength": 0.35,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": true,
+        "selected_layer": "scenario_layer",
+        "sequence": {
+          "clips": [
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 200.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "0bd181dc023e4dd98407643c57449d87",
+              "intensity": 1.0,
+              "kind": "camera",
+              "layer_id": "scenario_layer",
+              "loop": false,
+              "name": "C\u00e2mera",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "1a86dcb18fce468ab774e4475da9f3ff",
+              "intensity": 1.0,
+              "kind": "rain",
+              "layer_id": "scenario_layer",
+              "loop": true,
+              "name": "Chuva",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            }
+          ],
+          "duration": 30.0,
+          "loop": true,
+          "schema_version": 1
+        },
+        "status_label": "Autoria de cen\u00e1rio \u2014 altera\u00e7\u00f5es n\u00e3o salvas",
+        "timeline_position": 1.25,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    },
+    {
+      "action": "play, pause and stop timeline",
+      "capture": "06-native-timeline-play-pause-stop.png",
+      "sha256": "7f90de0e3950ea5bca5cddb08022c43b4d16195b9d87cb266b64c86a3aa2cf26",
+      "state": {
+        "audio_failures": [],
+        "layers": [
+          {
+            "id": "scenario_layer",
+            "locked": false,
+            "name": "Moldura Meio",
+            "visible": true
+          },
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          },
+          {
+            "asset_id": "project_image",
+            "id": "project_image",
+            "layer_id": "scenario_layer",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 319.25868725868725,
+                "y": 178.58532818532817,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          },
+          {
+            "depth": 0.65,
+            "layer_id": "scenario_layer",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 0.4,
+            "scroll_y": 0.15,
+            "translation_strength": 0.35,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": false,
+        "selected_layer": "scenario_layer",
+        "sequence": {
+          "clips": [
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 200.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "0bd181dc023e4dd98407643c57449d87",
+              "intensity": 1.0,
+              "kind": "camera",
+              "layer_id": "scenario_layer",
+              "loop": false,
+              "name": "C\u00e2mera",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "1a86dcb18fce468ab774e4475da9f3ff",
+              "intensity": 1.0,
+              "kind": "rain",
+              "layer_id": "scenario_layer",
+              "loop": true,
+              "name": "Chuva",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            }
+          ],
+          "duration": 30.0,
+          "loop": true,
+          "schema_version": 1
+        },
+        "status_label": "Autoria de cen\u00e1rio \u2014 altera\u00e7\u00f5es n\u00e3o salvas",
+        "timeline_position": 0,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    },
+    {
+      "action": "render light, fire, text cutscene and real WAV audio",
+      "capture": "07-native-effects-audio-cutscene.png",
+      "sha256": "886bcec5fab0b3e7ed17c7f2aedfe13df3902456452afa50c61ea1e44411d85f",
+      "state": {
+        "audio_failures": [],
+        "layers": [
+          {
+            "id": "scenario_layer",
+            "locked": false,
+            "name": "Moldura Meio",
+            "visible": true
+          },
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          },
+          {
+            "asset_id": "project_image",
+            "id": "project_image",
+            "layer_id": "scenario_layer",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 319.25868725868725,
+                "y": 178.58532818532817,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          },
+          {
+            "depth": 0.65,
+            "layer_id": "scenario_layer",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 0.4,
+            "scroll_y": 0.15,
+            "translation_strength": 0.35,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": true,
+        "selected_layer": "scenario_layer",
+        "sequence": {
+          "clips": [
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 200.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "0bd181dc023e4dd98407643c57449d87",
+              "intensity": 1.0,
+              "kind": "camera",
+              "layer_id": "scenario_layer",
+              "loop": false,
+              "name": "C\u00e2mera",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "1a86dcb18fce468ab774e4475da9f3ff",
+              "intensity": 1.0,
+              "kind": "rain",
+              "layer_id": "scenario_layer",
+              "loop": true,
+              "name": "Chuva",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffd36a",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "light_native",
+              "intensity": 0.8,
+              "kind": "light",
+              "layer_id": "scenario_layer",
+              "loop": false,
+              "name": "Luz nativa",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ff9c40",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "fire_native",
+              "intensity": 0.6,
+              "kind": "fire",
+              "layer_id": "scenario_layer",
+              "loop": true,
+              "name": "Fogo nativo",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "text_native",
+              "intensity": 1.0,
+              "kind": "text",
+              "layer_id": null,
+              "loop": false,
+              "name": "Cutscene nativa",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "A cena come\u00e7a",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": "audio_native_fixture",
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "audio_native",
+              "intensity": 1.0,
+              "kind": "audio",
+              "layer_id": null,
+              "loop": true,
+              "name": "Trilha nativa",
+              "opacity": 0.4,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            }
+          ],
+          "duration": 30.0,
+          "loop": true,
+          "schema_version": 1
+        },
+        "status_label": "Autoria de cen\u00e1rio \u2014 altera\u00e7\u00f5es n\u00e3o salvas",
+        "timeline_position": 1.0,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    },
+    {
+      "action": "handle missing audio asset without crashing",
+      "capture": "08-native-audio-missing-recoverable.png",
+      "sha256": "a051a2f4c8ffde0651ea23c06e2ef7c22729ddd6d6be0a8d3de17a8b412d53a1",
+      "state": {
+        "audio_failures": [
+          "audio_native_missing"
+        ],
+        "layers": [
+          {
+            "id": "scenario_layer",
+            "locked": false,
+            "name": "Moldura Meio",
+            "visible": true
+          },
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          },
+          {
+            "asset_id": "project_image",
+            "id": "project_image",
+            "layer_id": "scenario_layer",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 319.25868725868725,
+                "y": 178.58532818532817,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          },
+          {
+            "depth": 0.65,
+            "layer_id": "scenario_layer",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 0.4,
+            "scroll_y": 0.15,
+            "translation_strength": 0.35,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": true,
+        "selected_layer": "scenario_layer",
+        "sequence": {
+          "clips": [
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 200.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "0bd181dc023e4dd98407643c57449d87",
+              "intensity": 1.0,
+              "kind": "camera",
+              "layer_id": "scenario_layer",
+              "loop": false,
+              "name": "C\u00e2mera",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "1a86dcb18fce468ab774e4475da9f3ff",
+              "intensity": 1.0,
+              "kind": "rain",
+              "layer_id": "scenario_layer",
+              "loop": true,
+              "name": "Chuva",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffd36a",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "light_native",
+              "intensity": 0.8,
+              "kind": "light",
+              "layer_id": "scenario_layer",
+              "loop": false,
+              "name": "Luz nativa",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ff9c40",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "fire_native",
+              "intensity": 0.6,
+              "kind": "fire",
+              "layer_id": "scenario_layer",
+              "loop": true,
+              "name": "Fogo nativo",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "text_native",
+              "intensity": 1.0,
+              "kind": "text",
+              "layer_id": null,
+              "loop": false,
+              "name": "Cutscene nativa",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "A cena come\u00e7a",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": "audio_native_fixture",
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "audio_native",
+              "intensity": 1.0,
+              "kind": "audio",
+              "layer_id": null,
+              "loop": true,
+              "name": "Trilha nativa",
+              "opacity": 0.4,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": "audio_asset_missing",
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "audio_native_missing",
+              "intensity": 1.0,
+              "kind": "audio",
+              "layer_id": null,
+              "loop": false,
+              "name": "\u00c1udio ausente",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            }
+          ],
+          "duration": 30.0,
+          "loop": true,
+          "schema_version": 1
+        },
+        "status_label": "\u00c1udio ausente/alterado; revincule na Biblioteca: asset file is missing: missing-audio.wav \u2014 altera\u00e7\u00f5es n\u00e3o salvas",
+        "timeline_position": 1.0,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    },
+    {
+      "action": "save, close, reopen and verify persisted document",
+      "capture": "09-native-reopened-persisted.png",
+      "sha256": "f598cdf1d8431a6520d8277ca57d69f57b1354d1fc9675292b0692437d56a43e",
+      "state": {
+        "audio_failures": [],
+        "layers": [
+          {
+            "id": "scenario_layer",
+            "locked": false,
+            "name": "Moldura Meio",
+            "visible": true
+          },
+          {
+            "id": "layer_default",
+            "locked": false,
+            "name": "Default",
+            "visible": true
+          }
+        ],
+        "objects": [
+          {
+            "asset_id": "project_image",
+            "id": "background_object",
+            "layer_id": "layer_default",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 320.0,
+                "y": 180.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          },
+          {
+            "asset_id": "project_image",
+            "id": "project_image",
+            "layer_id": "scenario_layer",
+            "locked": false,
+            "transform": {
+              "flip_x": false,
+              "flip_y": false,
+              "pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "position": {
+                "x": 319.25868725868725,
+                "y": 178.58532818532817,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              }
+            },
+            "visible": true
+          }
+        ],
+        "parallax": [
+          {
+            "depth": 0.0,
+            "layer_id": "layer_default",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 1.0,
+            "scroll_y": 1.0,
+            "translation_strength": 1.0,
+            "zoom_strength": 1.0
+          },
+          {
+            "depth": 0.65,
+            "layer_id": "scenario_layer",
+            "mirror_x": false,
+            "mirror_y": false,
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "repeat_x": false,
+            "repeat_y": false,
+            "scroll_x": 0.4,
+            "scroll_y": 0.15,
+            "translation_strength": 0.35,
+            "zoom_strength": 1.0
+          }
+        ],
+        "preview_active": false,
+        "selected_layer": "scenario_layer",
+        "sequence": {
+          "clips": [
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 200.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "0bd181dc023e4dd98407643c57449d87",
+              "intensity": 1.0,
+              "kind": "camera",
+              "layer_id": "scenario_layer",
+              "loop": false,
+              "name": "C\u00e2mera",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "1a86dcb18fce468ab774e4475da9f3ff",
+              "intensity": 1.0,
+              "kind": "rain",
+              "layer_id": "scenario_layer",
+              "loop": true,
+              "name": "Chuva",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffd36a",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "light_native",
+              "intensity": 0.8,
+              "kind": "light",
+              "layer_id": "scenario_layer",
+              "loop": false,
+              "name": "Luz nativa",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ff9c40",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "fire_native",
+              "intensity": 0.6,
+              "kind": "fire",
+              "layer_id": "scenario_layer",
+              "loop": true,
+              "name": "Fogo nativo",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": null,
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "text_native",
+              "intensity": 1.0,
+              "kind": "text",
+              "layer_id": null,
+              "loop": false,
+              "name": "Cutscene nativa",
+              "opacity": 1.0,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "A cena come\u00e7a",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            },
+            {
+              "asset_id": "audio_native_fixture",
+              "color": "#ffffff",
+              "duration": 5.0,
+              "enabled": true,
+              "end_opacity": 1.0,
+              "end_rotation": 0.0,
+              "end_x": 0.0,
+              "end_y": 0.0,
+              "end_zoom": 1.0,
+              "id": "audio_native",
+              "intensity": 1.0,
+              "kind": "audio",
+              "layer_id": null,
+              "loop": true,
+              "name": "Trilha nativa",
+              "opacity": 0.4,
+              "rotation": 0.0,
+              "seed": 1,
+              "start": 0.0,
+              "target_id": null,
+              "text": "",
+              "x": 0.0,
+              "y": 0.0,
+              "zoom": 1.0
+            }
+          ],
+          "duration": 30.0,
+          "loop": true,
+          "schema_version": 1
+        },
+        "status_label": "Autoria de cen\u00e1rio",
+        "timeline_position": 1.0,
+        "window_size": [
+          1500,
+          980
+        ],
+        "window_visible": true
+      }
+    }
+  ],
+  "fixture_asset": "fixture\\scene.png",
+  "fixture_audio": "fixture\\scene-tone.wav",
+  "fixture_project": "fixture\\native-studio.ndtproj",
+  "language": "pt",
+  "native_window": true,
+  "process_id": 20536,
+  "qt_platform": "native-default",
+  "scope": "post-E13 studio native source execution and user-flow harness",
+  "sidecar": "fixture\\native-studio.ndtscene.json",
+  "source_commit": "556d1182a86ab20f55601afa3d51967070408c38",
+  "status": "PASS"
+}

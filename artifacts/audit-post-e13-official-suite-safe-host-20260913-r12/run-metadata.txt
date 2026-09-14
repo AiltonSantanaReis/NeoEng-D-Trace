@@ -1,0 +1,23 @@
+feature_id=AUD-POST-E13-OFFICIAL-SUITE-R12-20260913
+status=PASS
+source_commit=e727e9d470b3256b05800cda59d9aa2401a1959f
+branch=Ailton/audit-post-e13-scenario-editor-20260912
+environment=Windows host canonical project virtualenv
+qt_qpa_platform=offscreen
+command=canonical-project-python -m pytest --tb=short --junitxml=external/official-junit.xml
+collected=2636
+passed=2634
+skipped=2
+failures=0
+errors=0
+warnings=0
+duration_seconds=84.83
+controlled_skips=test_plan_rejects_symlink_escape,test_plan_rejects_symlink_destination
+host_symlink_executed=false
+unity_executed=false
+shutdown_or_process_termination_requested=false
+governance_sha256=D933DB005B7110C391CF776CDA3014CE348D61A91A5E9902AEEA619185EC3EA0
+raw_log_sha256=04CE02F80C4B28DC7FE70382D6581E4191ED7DBB5296819F375EA4AD0EA214B6
+raw_junit_sha256=DA18C20E19BEE0C64A9951A1D845BF417C1CADDF6D6E6BA48449192A5ABD1773
+sanitized_log_sha256=171F156EDDA800951356FB4244459CAE08CE20D18B5E1E3CA870399CE4B1A0A3
+sanitized_junit_sha256=D75ECAB717E4752250FE85E0EEE9EB3F2336EEB239A23C161D80E304AACA2113

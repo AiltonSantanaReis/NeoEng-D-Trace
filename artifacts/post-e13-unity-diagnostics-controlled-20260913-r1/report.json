@@ -1,0 +1,71 @@
+{
+  "format_id": "neoeng-d-trace-unity-diagnostics-classification",
+  "schema_version": 1,
+  "status": "PASS",
+  "classification": "CONTROLLED_LOG_CLASSIFICATION_ONLY",
+  "native_unity_reexecuted": false,
+  "native_shutdown_or_process_termination_requested": false,
+  "positive": {
+    "source_name": "unity-positive.log",
+    "kind": "positive",
+    "functional_status": "PASS",
+    "native_clean_environment_status": "PENDING_EVIDENCE",
+    "shutdown_diagnostic_status": "PENDING_EVIDENCE",
+    "internal_subprocess_exit_code_4_observed": true,
+    "marker_counts": {
+      "licensing_code_10": 1,
+      "licensing_failed_validation": 1,
+      "access_token_unavailable": 1,
+      "entitlement_resolved": 5,
+      "unity_personal_entitlement": 1,
+      "curl_callback_aborted": 1,
+      "network_timeout": 3,
+      "abort_threads": 4,
+      "memory_leaks_event": 1,
+      "no_leaked_weakptrs": 1,
+      "exit_code_0": 2,
+      "exit_code_4": 1,
+      "positive_runtime_marker": 1,
+      "negative_runtime_marker": 0
+    },
+    "interpretation": {
+      "functional": "The expected positive/negative runtime marker and process ExitCode 0 were both observed.",
+      "licensing": "Observed licensing signals are preserved; this classifier does not diagnose or suppress their cause.",
+      "shutdown": "abort_threads and MemoryLeaks records are observations, not a clean shutdown or soak verdict."
+    }
+  },
+  "negative": {
+    "source_name": "unity-negative.log",
+    "kind": "negative",
+    "functional_status": "PASS",
+    "native_clean_environment_status": "PENDING_EVIDENCE",
+    "shutdown_diagnostic_status": "PENDING_EVIDENCE",
+    "internal_subprocess_exit_code_4_observed": false,
+    "marker_counts": {
+      "licensing_code_10": 1,
+      "licensing_failed_validation": 1,
+      "access_token_unavailable": 1,
+      "entitlement_resolved": 5,
+      "unity_personal_entitlement": 1,
+      "curl_callback_aborted": 1,
+      "network_timeout": 3,
+      "abort_threads": 4,
+      "memory_leaks_event": 1,
+      "no_leaked_weakptrs": 1,
+      "exit_code_0": 1,
+      "exit_code_4": 0,
+      "positive_runtime_marker": 0,
+      "negative_runtime_marker": 1
+    },
+    "interpretation": {
+      "functional": "The expected positive/negative runtime marker and process ExitCode 0 were both observed.",
+      "licensing": "Observed licensing signals are preserved; this classifier does not diagnose or suppress their cause.",
+      "shutdown": "abort_threads and MemoryLeaks records are observations, not a clean shutdown or soak verdict."
+    }
+  },
+  "limitations": [
+    "The classifier reads logs and never launches Unity or executes -quit.",
+    "PENDING_EVIDENCE remains correct for a clean licensing/network/shutdown environment.",
+    "A MemoryLeaks event and abort_threads message are retained and are not converted into PASS."
+  ]
+}

@@ -25,6 +25,8 @@ def test_unity_upm_package_has_stable_source_only_identity():
         "dependencies": {
             "com.unity.modules.jsonserialize": "1.0.0",
             "com.unity.modules.particlesystem": "1.0.0",
+            "com.unity.modules.imageconversion": "1.0.0",
+            "com.unity.modules.animation": "1.0.0",
         },
         "author": {"name": "NeoEng-D-Trace"},
         "keywords": ["neoeng", "d-trace", "sprites", "collision", "integration"],
@@ -116,4 +118,6 @@ def test_unity_stage3_optional_resources_have_native_contract_sources():
     assert runtime_asmdef["references"] == [
         "UnityEngine.JSONSerializeModule",
         "UnityEngine.ParticleSystemModule",
+        "UnityEngine.ImageConversionModule",
+        "UnityEngine.AnimationModule",
     ]

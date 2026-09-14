@@ -62,21 +62,29 @@ def test_native_contour_flow_detect_edit_undo_redo_cancel_and_create(
     panel = VectorContourPanel(session, project)
     panel.update_language("pt")
     panel.set_selected_asset("subject")
+    messages: list[str] = []
+    panel.status_message.connect(messages.append)
 
     assert panel.detect_selected()
+    assert messages[-1].startswith("Contorno detectado para subject:")
     assert "source" in panel.state_label.text() or "origem" in panel.state_label.text()
     panel.vertex_index.setValue(1)
     panel.vertex_x.setValue(110.0)
     panel.vertex_y.setValue(20.0)
     assert panel.apply_vertex()
+    assert messages[-1] == "Vértice do contorno corrigido"
     assert panel.undo()
+    assert messages[-1] == "Edição de contorno desfeita"
     assert panel.redo()
+    assert messages[-1] == "Edição de contorno refeita"
     assert panel.create_object()
+    assert messages[-1].startswith("Objeto vetorial de cena criado: vector_subject")
     assert session.document.objects[0].vector_geometry is not None
     assert session.document.objects[0].vector_geometry.polygon[1].x == 110.0
 
     assert panel.detect_selected()
     assert panel.cancel()
+    assert messages[-1] == "Detecção de contorno cancelada; origem preservada"
     assert panel._editing is not None and panel._editing.cancelled
     assert panel.title.text() == "Contorno vetorial"
 

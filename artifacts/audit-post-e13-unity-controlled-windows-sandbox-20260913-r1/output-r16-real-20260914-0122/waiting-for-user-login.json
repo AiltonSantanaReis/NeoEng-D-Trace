@@ -1,0 +1,16 @@
+{
+    "state":  "WAITING_FOR_MANUAL_HUB_LOGIN_OR_INSTALLATION",
+    "observed_utc":  "2026-09-14T01:22:00.7795074Z",
+    "elapsed_seconds":  2460,
+    "trigger_present":  false,
+    "trigger_valid":  false,
+    "abort_present":  false,
+    "abort_valid":  false,
+    "automatic_timeout_seconds":  null,
+    "automatic_shutdown_before_trigger":  false,
+    "persistent_install_mount":  "C:\\UnityInstall",
+    "editors_available":  [
+                              "C:\\Unity\\Editor\\Unity.exe"
+                          ],
+    "note":  "The Sandbox remains alive while installation or manual Hub authentication is in progress. Create run-test.trigger only after the owner confirms completion."
+}

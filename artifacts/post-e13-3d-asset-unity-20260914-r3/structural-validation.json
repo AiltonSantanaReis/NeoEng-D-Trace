@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "schema": "neoeng-d-trace-reference-3d-asset-validation",
+  "asset": {
+    "name": "Eclipse Warden",
+    "version": "0.1.0",
+    "units": "meters",
+    "coordinate_system": "glTF 2.0 Y-up right-handed",
+    "source_method": "procedural_original"
+  },
+  "checks": {
+    "checksum_files": 30,
+    "mesh_count": 23,
+    "triangle_count": 2144,
+    "material_count": 5,
+    "joint_count": 18,
+    "idle_animation_channels": 3,
+    "gltf_version": "2.0",
+    "glb_binary_bytes": 156344,
+    "obj_export": true,
+    "absolute_machine_paths": false
+  },
+  "unity_contract": {
+    "format": "glTF 2.0 / GLB",
+    "status": "PENDING_EVIDENCE",
+    "note": "Structural readiness only; no native Unity import is claimed by this report."
+  },
+  "tamper_test": {
+    "status": "PASS",
+    "detected": true,
+    "error": "checksum mismatch: textures/armor_basecolor.png"
+  }
+}

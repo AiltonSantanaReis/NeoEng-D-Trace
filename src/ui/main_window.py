@@ -66,7 +66,6 @@ from src.ui.viewport_actions import install_viewport_actions
 
 
 class MainWindow(QMainWindow):
-
     command_palette_requested = Signal()
     act_grid: QAction
     act_snap: QAction
@@ -608,6 +607,7 @@ class MainWindow(QMainWindow):
         self.undo_action.setText(t["undo"])
         self.redo_action.setText(t["redo"])
         getattr(self, "settings_action").setText(t["view_settings"])
+        getattr(self, "unity_integration_action").setText(t["unity_integration"])
 
         apply_action_tooltips(self, t)
 

@@ -57,14 +57,17 @@ def test_symlink_results_remain_separate():
     registry = validate_registry()
     symlink = registry["gates"]["symlink"]
     assert symlink["sandbox_status"] == "PASS_SANDBOX_DIAGNOSTIC_ONLY"
-    assert symlink["local_suite_status"] == "SKIP_PRIVILEGE_LIMITATION"
+    assert symlink["local_suite_status"] == "SKIP_CONTROLLED_ONLY"
+    assert symlink["current_definitive_requalification"]["status"] == "PASS"
+    assert symlink["current_definitive_requalification"]["skipped"] == 0
 
 
-def test_human_review_deferral_remains_pending_until_final_audit():
+def test_human_review_approval_is_registered_after_final_audit():
     registry = validate_registry()
     visual = registry["gates"]["visual"]
-    assert visual["native_human_status"] == "PENDING_EVIDENCE"
-    assert visual["human_review_policy"] == (
-        "DEFERRED_UNTIL_FINAL_AUDIT_BY_USER_AUTHORIZATION"
+    assert visual["native_human_status"] == "PASS"
+    assert visual["human_review_policy"] == "APPROVED_BY_OWNER"
+    assert visual["human_review_required_before_close"] is False
+    assert visual["human_review_decision"].endswith(
+        "DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md"
     )
-    assert visual["human_review_required_before_close"] is True

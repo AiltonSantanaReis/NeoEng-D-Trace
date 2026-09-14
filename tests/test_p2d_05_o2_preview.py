@@ -67,6 +67,7 @@ def _transform(x: float = 0.0, y: float = 0.0) -> SceneTransformRecord:
 def _document(
     asset: AssetReferenceRecord,
     *,
+    assets: list[AssetReferenceRecord] | None = None,
     objects: list[SceneObjectAuthoringRecord] | None = None,
     groups: list[SceneGroupAuthoringRecordV2] | None = None,
     sockets: list[SceneSocketRecord] | None = None,
@@ -76,7 +77,7 @@ def _document(
             name="o2", generator="tests", app_version="0"
         ),
         project=ProjectReferenceRecord(sha256="a" * 64),
-        assets=[asset],
+        assets=assets or [asset],
         layers=[
             SceneLayerAuthoringRecord(id="back", name="Back"),
             SceneLayerAuthoringRecord(id="front", name="Front"),
@@ -149,6 +150,121 @@ def test_viewport_reuses_only_validated_pixmap_and_reloads_after_revision(
         assert len(calls) == 2
         assert not view._asset_diagnostics
         assert len(view._asset_pixmap_cache) == 1
+    finally:
+        view.close()
+        qt_app.processEvents()
+
+
+def test_viewport_reuses_asset_validation_until_file_fingerprint_changes(
+    qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    asset_path = tmp_path / "project" / "assets" / "a.png"
+    _write_png(asset_path, "#2aa7ff")
+    asset = AssetReferenceRecord(
+        id="asset", path="assets/a.png", sha256=sha256_file(asset_path)
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(_document(asset)))
+    view = SceneAuthoringViewport(session, project_root=tmp_path / "project")
+    resolver_calls: list[str] = []
+    original_resolver = viewport_module.resolve_scene_asset
+
+    def counted_resolver(record, project_root):
+        resolver_calls.append(record.id)
+        return original_resolver(record, project_root)
+
+    monkeypatch.setattr(viewport_module, "resolve_scene_asset", counted_resolver)
+    try:
+        view.sync()
+        view.sync()
+        assert resolver_calls == []
+
+        # Disable the asynchronous watcher so the fingerprint path is tested
+        # directly as well as through the normal QFileSystemWatcher callback.
+        view._asset_watcher.removePaths(view._asset_watcher.files())
+        qt_app.processEvents()
+        resolver_calls.clear()
+        _write_png(asset_path, "#ff5d63")
+        view.sync()
+        assert resolver_calls == ["asset"]
+        assert any("hash mismatch" in message for message in view._asset_diagnostics)
+    finally:
+        view.close()
+        qt_app.processEvents()
+
+
+def test_viewport_retains_validation_for_assets_hidden_by_group_isolation(
+    qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    first_path = tmp_path / "project" / "assets" / "first.png"
+    second_path = tmp_path / "project" / "assets" / "second.png"
+    _write_png(first_path, "#2aa7ff")
+    _write_png(second_path, "#ff5d63")
+    first_asset = AssetReferenceRecord(
+        id="first", path="assets/first.png", sha256=sha256_file(first_path)
+    )
+    second_asset = AssetReferenceRecord(
+        id="second", path="assets/second.png", sha256=sha256_file(second_path)
+    )
+    document = _document(
+        first_asset,
+        objects=[
+            SceneObjectAuthoringRecord(
+                id="a", asset_id="first", layer_id="back", transform=_transform()
+            ),
+            SceneObjectAuthoringRecord(
+                id="b",
+                asset_id="second",
+                layer_id="front",
+                transform=_transform(20, 10),
+            ),
+        ],
+        assets=[first_asset, second_asset],
+        groups=[SceneGroupAuthoringRecordV2(id="group", name="Group", members=["a"])],
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(document))
+    view = SceneAuthoringViewport(session, project_root=tmp_path / "project")
+    resolver_calls: list[str] = []
+    original_resolver = viewport_module.resolve_scene_asset
+
+    def counted_resolver(record, project_root):
+        resolver_calls.append(record.id)
+        return original_resolver(record, project_root)
+
+    monkeypatch.setattr(viewport_module, "resolve_scene_asset", counted_resolver)
+    try:
+        assert len(view._asset_resolution_cache) == 2
+        assert session.set_isolated_group("group") is True
+        assert resolver_calls == []
+        assert len(view._asset_resolution_cache) == 2
+        assert session.clear_isolation() is True
+        assert resolver_calls == []
+        assert len(view._asset_resolution_cache) == 2
+    finally:
+        view.close()
+        qt_app.processEvents()
+
+
+def test_incremental_transform_refresh_shades_only_changed_object(
+    qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    asset_path = tmp_path / "project" / "assets" / "a.png"
+    _write_png(asset_path, "#2aa7ff")
+    asset = AssetReferenceRecord(
+        id="asset", path="assets/a.png", sha256=sha256_file(asset_path)
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(_document(asset)))
+    view = SceneAuthoringViewport(session, project_root=tmp_path / "project")
+    shade_calls: list[tuple[float, float]] = []
+    original_shade = viewport_module.shade_color
+
+    def counted_shade(position, material, settings):
+        shade_calls.append((float(position[0]), float(position[1])))
+        return original_shade(position, material, settings)
+
+    monkeypatch.setattr(viewport_module, "shade_color", counted_shade)
+    try:
+        assert session.update_transform("a", _transform(44.0, 12.0)) is True
+        assert shade_calls == [(44.0, 12.0)]
     finally:
         view.close()
         qt_app.processEvents()
@@ -330,6 +446,59 @@ def test_viewport_selection_refresh_does_not_rebuild_scene(
         assert view._items["a"]._selected is True
         assert view._items["b"]._selected is False
     finally:
+        view.close()
+        qt_app.processEvents()
+
+
+def test_viewport_transform_change_reuses_structure_snapshot(
+    qt_app: QApplication, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    asset_path = tmp_path / "project" / "assets" / "a.png"
+    _write_png(asset_path, "#2aa7ff")
+    asset = AssetReferenceRecord(
+        id="asset", path="assets/a.png", sha256=sha256_file(asset_path)
+    )
+    session = SceneAuthoringSession(SceneAuthoringModel(_document(asset)))
+    session.set_selection(["a"], "a")
+    view = SceneAuthoringViewport(session, project_root=tmp_path / "project")
+    visibility_calls: list[str] = []
+    repaint_calls: list[bool] = []
+    original_visibility = viewport_module.object_is_effectively_visible
+
+    def counted_visibility(*args: object, **kwargs: object) -> bool:
+        visibility_calls.append(str(args[1]))
+        return original_visibility(*args, **kwargs)
+
+    monkeypatch.setattr(
+        viewport_module, "object_is_effectively_visible", counted_visibility
+    )
+    original_viewport_update = view.viewport().update
+
+    def counted_update(*args: object, **kwargs: object) -> None:
+        repaint_calls.append(True)
+        original_viewport_update(*args, **kwargs)
+
+    monkeypatch.setattr(view.viewport(), "update", counted_update)
+    try:
+        session.begin_gesture()
+        session.preview_transform_selected(
+            translation=Point3Record(x=3.0, y=1.0, z=0.0)
+        )
+        assert visibility_calls == []
+        assert repaint_calls == []
+        assert view._items["a"].pos().x() == pytest.approx(3.0)
+        assert view._items["a"].pos().y() == pytest.approx(1.0)
+        session.cancel_gesture()
+        repaint_calls.clear()
+        assert (
+            session.set_camera(
+                SceneCameraAuthoringRecord(position=PointRecord(x=8.0, y=4.0), zoom=1.5)
+            )
+            is True
+        )
+        assert repaint_calls == [True]
+    finally:
+        session.cancel_gesture()
         view.close()
         qt_app.processEvents()
 

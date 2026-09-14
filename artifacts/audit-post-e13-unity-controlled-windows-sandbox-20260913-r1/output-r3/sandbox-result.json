@@ -1,0 +1,67 @@
+﻿{
+    "schema_version":  1,
+    "environment":  "windows-sandbox",
+    "networking":  "disabled",
+    "editor_path":  "C:\\Unity\\Editor\\Unity.exe",
+    "editor_working_directory":  "C:\\Unity\\Editor",
+    "project_path":  "C:\\work\\project",
+    "runtime_overlay":  "C:\\runtime",
+    "loader_preflight":  {
+                             "msvcp100.dll":  {
+                                                  "path":  "C:\\runtime\\msvcp100.dll",
+                                                  "present":  true,
+                                                  "length":  608080
+                                              },
+                             "msvcr100.dll":  {
+                                                  "path":  "C:\\runtime\\msvcr100.dll",
+                                                  "present":  true,
+                                                  "length":  829264
+                                              },
+                             "set_dll_directory":  true,
+                             "loadlibrary:C:\\runtime\\msvcp100.dll":  {
+                                                                           "handle_present":  true,
+                                                                           "last_error":  203,
+                                                                           "message":  ""
+                                                                       },
+                             "loadlibrary:C:\\runtime\\msvcr100.dll":  {
+                                                                           "handle_present":  true,
+                                                                           "last_error":  203,
+                                                                           "message":  ""
+                                                                       },
+                             "loadlibrary:C:\\Unity\\Editor\\OpenRL.dll":  {
+                                                                               "handle_present":  false,
+                                                                               "last_error":  126,
+                                                                               "message":  "Não foi possível encontrar o módulo especificado"
+                                                                           },
+                             "loadlibrary:C:\\Unity\\Editor\\Unity.dll":  {
+                                                                              "handle_present":  false,
+                                                                              "last_error":  126,
+                                                                              "message":  "Não foi possível encontrar o módulo especificado"
+                                                                          }
+                         },
+    "process_started":  true,
+    "process_exit_code":  -2147024770,
+    "timed_out":  false,
+    "start_error":  "",
+    "started_utc":  "2026-09-13T15:31:49.7011040Z",
+    "ended_utc":  "2026-09-13T15:31:52.1140644Z",
+    "report_present":  false,
+    "success_marker":  false,
+    "failure_marker":  false,
+    "licensing_signals":  {
+                              "module_seen":  false,
+                              "access_token_error":  false,
+                              "code_10":  false,
+                              "license_client_seen":  false
+                          },
+    "shutdown_signals":  {
+                             "batchmode_quit":  false,
+                             "shut_down":  false,
+                             "exited_batchmode":  false,
+                             "return_code_zero":  false,
+                             "abort_threads":  false,
+                             "memory_leaks":  false
+                         },
+    "remaining_unity_process_count_before_sandbox_shutdown":  0,
+    "shutdown_request":  "sandbox-only: shutdown.exe /s /t 0 /f"
+}

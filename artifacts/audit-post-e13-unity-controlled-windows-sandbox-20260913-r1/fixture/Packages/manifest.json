@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "com.neoeng.dtrace": "file:com.neoeng.dtrace"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "main": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\01-main.png",
+    "sha256": "6010D6851E8B0CCE7B86FF1B28C13F2A7E7CE09A12F3D60AB2FB1B3974C6D25B"
+  },
+  "main_after_project_load": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\03-main-after-project-load.png",
+    "sha256": "C83FE0B2031886E3450FC0585A7FE189D17283C697ED47453EC9362D03267803"
+  },
+  "view_menu_popup_screen": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\03-view-menu-popup-screen.png",
+    "sha256": "5F2C998B4175EECA13A2AF8DD35830D5AAA98371E727AF10E64D9B719C42FA47",
+    "capture": "primary screen CopyFromScreen",
+    "bounds": "0,0,3840,2160"
+  },
+  "mask_viewer": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\04-mask-viewer.png",
+    "sha256": "EC192D010DF04F65B619AE9C7C95793EF0910C50667712FD9CCE8231A3C77E98"
+  },
+  "mask_viewer_perfeito": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\04-mask-viewer-perfeito.png",
+    "sha256": "7D9949AEC112C248D1F1D3EDE31DB9879E60EF1B443D3F4912236D96BD04F119"
+  },
+  "mask_viewer_aprim": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\04-mask-viewer-aprim.png",
+    "sha256": "4F124B10ECA6685D20FD9D6BC8EB70C10722031E3CF557434BBB282D02BF7974"
+  },
+  "mask_viewer_grabcut": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\04-mask-viewer-grabcut.png",
+    "sha256": "D00662ADC53BA039983C4DA059968F93441568A5A89E0A8BC8CE1C570C074762"
+  },
+  "mask_viewer_sobel": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\04-mask-viewer-sobel.png",
+    "sha256": "CF7E3E63B9D40306B302D2B6D4DE39152E9C6C47DA6E9D9D04643B9654F082FB"
+  },
+  "mask_viewer_canny": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\04-mask-viewer-canny.png",
+    "sha256": "4E875B250F296B851ED06C81C6E43AF7EEA94E2902DAA55E6B5602EA88BD3F7E"
+  },
+  "asset_library_ready": {
+    "path": "artifacts\\audit-post-e13-binary-mask-viewer-20260912-r3\\05-asset-library-ready.png",
+    "sha256": "4DB53EAB40CBB1707406BB023E78C8D6FD1ED4D34D629A22CB3439F6A2DDFF8C"
+  },
+  "asset_library_filter_contract": "covered by focused Qt tests; controls visible in asset_library_ready",
+  "editor_title": "Editor de Cenário — NeoEng-D-Trace",
+  "editor_window_rect_before_tilemap_flow": "-13,-13,3853,2077",
+  "window": "captured by PrintWindow from binary window handle"
+}

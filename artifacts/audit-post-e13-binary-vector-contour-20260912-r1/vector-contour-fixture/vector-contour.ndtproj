@@ -1,0 +1,18 @@
+{
+  "format_id": "neoeng-d-trace-project",
+  "schema_version": 1,
+  "metadata": {"app_version": "0.3.0", "generator": "NeoEng-D-Trace E08-D3 post-processing fixture"},
+  "image": null,
+  "layers": [{"id": "layer_default", "name": "Default", "visible": true, "locked": false}],
+  "objects": [{
+    "id": "post-receiver",
+    "layer_id": "layer_default",
+    "polygon": [
+      {"x": -300, "y": -160}, {"x": 180, "y": -160},
+      {"x": 180, "y": 160}, {"x": -300, "y": 160}
+    ],
+    "beziers": null,
+    "collision": null
+  }],
+  "groups": []
+}

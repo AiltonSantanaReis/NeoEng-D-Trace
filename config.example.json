@@ -9,5 +9,7 @@
   "profiles": [],
   "log_level": "INFO",
   "log_to_file": false,
-  "log_file_path": null
+  "log_file_path": null,
+  "unity_hub_path": null,
+  "unity_editor_path": null
 }

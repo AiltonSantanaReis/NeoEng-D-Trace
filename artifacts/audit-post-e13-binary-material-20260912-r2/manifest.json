@@ -1,0 +1,42 @@
+{
+  "main": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\01-main.png",
+    "sha256": "BABA8D5602FF9FD9DD8C4F72F5B0166DD3263E1E3BFBE310D9A9B7DE71B21943"
+  },
+  "main_after_project_load": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\03-main-after-project-load.png",
+    "sha256": "C83FE0B2031886E3450FC0585A7FE189D17283C697ED47453EC9362D03267803"
+  },
+  "asset_library_ready": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\05-asset-library-ready.png",
+    "sha256": "4DB53EAB40CBB1707406BB023E78C8D6FD1ED4D34D629A22CB3439F6A2DDFF8C"
+  },
+  "asset_library_filter_contract": "covered by focused Qt tests; controls visible in asset_library_ready",
+  "material_selection": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\10-material-selection.png",
+    "sha256": "35E54D6ED2201B723C1A772466008D64B539071525BAA8202F5FE90B0E879D76"
+  },
+  "material_authoring_selected": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\11-material-authoring-selected.png",
+    "sha256": "B5FBA528CDC7B4C6C228F45FCB5814DB352B4D4B62A5A8C8DCE658FD1C093894"
+  },
+  "material_albedo_edited": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\11-material-albedo-edited.png",
+    "sha256": "4936D93F52C32D094C54942C52CC1E84D5A3747495413AEB99F84E9BF96C3BC3"
+  },
+  "material_applied": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\12-material-applied.png",
+    "sha256": "60B7EC57B2E9DF34183EEAA477EB5B8593E9C4341EB569E2FA33AB24146EE306"
+  },
+  "material_saved": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\13-material-saved.png",
+    "sha256": "2AB02243FA0B30B76FF5341D141FEFE28F1E1C276DF57F42318D7CADC21325D9"
+  },
+  "material_reloaded": {
+    "path": "artifacts\\audit-post-e13-binary-material-20260912-r2\\14-material-reloaded.png",
+    "sha256": "0C732A4BA54906769C7166BDDE14D4157A53B426D70151652C03912F091337EA"
+  },
+  "editor_title": "Editor de Cenário — NeoEng-D-Trace",
+  "editor_window_rect_before_tilemap_flow": "-13,-13,3853,2077",
+  "window": "captured by PrintWindow from binary window handle"
+}

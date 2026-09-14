@@ -1,0 +1,183 @@
+{
+  "assets": [
+    {
+      "id": "vector-source",
+      "path": "assets/scene/vector-source.png",
+      "path_kind": "relative",
+      "sha256": "4bffd31518cb8eabcfba2b2a4379ba54d6a1632ebd8836b1cbae36f9b33a9a18"
+    }
+  ],
+  "camera": {
+    "position": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "rotation": 0.0,
+    "zoom": 1.0
+  },
+  "format_id": "neoeng-d-trace-scene-authoring",
+  "groups": [],
+  "layers": [
+    {
+      "id": "layer_default",
+      "locked": false,
+      "name": "Default",
+      "visible": true
+    }
+  ],
+  "metadata": {
+    "app_version": "0.3.0",
+    "generator": "NeoEng-D-Trace E09",
+    "name": "E09 Vector Contour Fixture"
+  },
+  "objects": [
+    {
+      "asset_id": "vector-source",
+      "id": "vector_vector-source",
+      "layer_id": "layer_default",
+      "locked": false,
+      "transform": {
+        "flip_x": false,
+        "flip_y": false,
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      },
+      "vector_geometry": {
+        "algorithm": "opencv-contour-tree-r1",
+        "collision_polygon": [
+          {
+            "x": -5.0,
+            "y": -5.0
+          },
+          {
+            "x": 319.0,
+            "y": 0.0
+          },
+          {
+            "x": 319.0,
+            "y": 239.0
+          },
+          {
+            "x": 0.0,
+            "y": 239.0
+          }
+        ],
+        "detection_parameters": {
+          "approximation_epsilon": 1.0,
+          "channel": "luminance",
+          "collision_strategy": "polygon",
+          "minimum_area": 16.0,
+          "threshold": 1
+        },
+        "image_size": {
+          "height": 240,
+          "width": 320
+        },
+        "original_polygon": [
+          {
+            "x": 0.0,
+            "y": 0.0
+          },
+          {
+            "x": 319.0,
+            "y": 0.0
+          },
+          {
+            "x": 319.0,
+            "y": 239.0
+          },
+          {
+            "x": 0.0,
+            "y": 239.0
+          }
+        ],
+        "polygon": [
+          {
+            "x": -5.0,
+            "y": -5.0
+          },
+          {
+            "x": 319.0,
+            "y": 0.0
+          },
+          {
+            "x": 319.0,
+            "y": 239.0
+          },
+          {
+            "x": 0.0,
+            "y": 239.0
+          }
+        ],
+        "source_sha256": "4bffd31518cb8eabcfba2b2a4379ba54d6a1632ebd8836b1cbae36f9b33a9a18"
+      },
+      "visible": true
+    }
+  ],
+  "parallax_layers": [],
+  "project": {
+    "format_id": "neoeng-d-trace-project",
+    "schema_version": 1,
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "schema_version": 2,
+  "sequence": {
+    "clips": [
+      {
+        "asset_id": null,
+        "color": "#ffffff",
+        "duration": 5.0,
+        "enabled": true,
+        "end_opacity": 1.0,
+        "end_rotation": 0.0,
+        "end_x": 200.0,
+        "end_y": 0.0,
+        "end_zoom": 1.0,
+        "id": "89c1850673004ad1840718aaa1725907",
+        "intensity": 1.0,
+        "kind": "camera",
+        "layer_id": "layer_default",
+        "loop": false,
+        "name": "Câmera",
+        "opacity": 1.0,
+        "rotation": 0.0,
+        "seed": 1,
+        "start": 0.0,
+        "target_id": null,
+        "text": "",
+        "x": 0.0,
+        "y": 0.0,
+        "zoom": 1.0
+      }
+    ],
+    "duration": 30.0,
+    "loop": true,
+    "schema_version": 1
+  },
+  "snap": {
+    "enabled": false,
+    "mode": "pixel",
+    "spacing": {
+      "x": 1.0,
+      "y": 1.0
+    }
+  },
+  "sockets": []
+}

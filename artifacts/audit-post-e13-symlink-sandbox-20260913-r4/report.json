@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "feature_id": "AUD-POST-E13-SYMLINK-SANDBOX-20260913",
+  "status": "PASS_SANDBOX",
+  "execution": "controlled_container_only",
+  "host_symlink_test_executed": false,
+  "environment": {
+    "container_image": "neoeng-dtrace-symlink-audit:20260913-r4@sha256:5015b1a1b3a29c75f95523a45e30ed6db5c7536ab6571c6f3a71a16edde79376",
+    "network": "none",
+    "source_mount": "read_only:/workspace",
+    "evidence_mount": "read_write_isolated:/output",
+    "python": "3.11.16 (main, Sep  1 2026, 00:12:26) [GCC 14.2.0]",
+    "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "controlled_symlink_authorization": "1"
+  },
+  "source": {
+    "commit": "6a759f476cd7f0d756bec3172ce0a5896ceeb88e",
+    "test_integration_sync_sha256": "A88FED24F5B1D0C35407DFE7843342481B13F363EAFF212B8BDC899B583E062B",
+    "integration_sync_sha256": "90381E44173A7D034DFFE89DD88841554ED97D5C23D2497BBB8AF972F677276E",
+    "container_test_copy": "/tmp/test_integration_sync.py",
+    "container_test_copy_sha256": "A88FED24F5B1D0C35407DFE7843342481B13F363EAFF212B8BDC899B583E062B"
+  },
+  "capability_probe": {
+    "status": "PASS",
+    "directory_link": true,
+    "file_link": true
+  },
+  "project_test": {
+    "status": "PASS",
+    "exit_code": 0,
+    "command": [
+      "/usr/local/bin/python",
+      "-m",
+      "pytest",
+      "/tmp/test_integration_sync.py",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--rootdir=/tmp",
+      "--confcutdir=/tmp",
+      "--basetemp=/tmp/pytest-symlink-audit",
+      "--junitxml=/output/symlink-junit.xml"
+    ],
+    "tests": 31,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "symlink_cases": {
+      "test_plan_rejects_symlink_escape": {
+        "classname": "test_integration_sync",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      "test_plan_rejects_symlink_destination": {
+        "classname": "test_integration_sync",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      }
+    },
+    "required_cases_present": true
+  },
+  "artifacts": {
+    "junit": "/output/symlink-junit.xml",
+    "pytest_log": "/output/pytest-output.txt"
+  },
+  "duration_seconds": 1.506
+}

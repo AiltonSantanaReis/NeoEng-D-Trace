@@ -1,0 +1,20 @@
+# PBR texture references for the OBJ diagnostic export
+newmtl Armor_Metal
+Kd 1.0 1.0 1.0
+map_Kd textures/armor_basecolor.png
+
+newmtl Cloth_Cape
+Kd 1.0 1.0 1.0
+map_Kd textures/cloth_basecolor.png
+
+newmtl Leather_Belts
+Kd 1.0 1.0 1.0
+map_Kd textures/leather_basecolor.png
+
+newmtl Leather_Boots
+Kd 1.0 1.0 1.0
+map_Kd textures/leather_basecolor.png
+
+newmtl Energy_Rune
+Kd 1.0 1.0 1.0
+map_Kd textures/energy_basecolor.png

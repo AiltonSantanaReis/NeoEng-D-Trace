@@ -1,0 +1,188 @@
+﻿{
+    "schema_version":  1,
+    "environment":  "windows-sandbox",
+    "networking":  "disabled",
+    "editor_path":  "C:\\Unity\\Editor\\Unity.exe",
+    "editor_working_directory":  "C:\\Unity\\Editor",
+    "project_path":  "C:\\work\\project",
+    "runtime_overlay":  "C:\\runtime",
+    "license_preflight":  {
+                              "mapped_source":  "C:\\license-input\\UnityEntitlementLicense.xml",
+                              "target":  "<redacted-sandbox-user-profile>/AppData/Local/Unity/licenses/UnityEntitlementLicense.xml",
+                              "expected_sha256":  "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
+                              "source_present":  true,
+                              "source_bytes":  6731,
+                              "source_sha256":  "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
+                              "source_hash_matches":  true,
+                              "target_present":  true,
+                              "target_bytes":  6731,
+                              "target_sha256":  "C5CF45D8D85B08FAE7CD857499ADDA505BD06D29C456F4F9E7720DE94BCD0498",
+                              "target_hash_matches":  true,
+                              "copied_inside_sandbox":  true,
+                              "ready":  true,
+                              "error":  ""
+                          },
+    "loader_preflight":  {
+                             "msvcp100.dll":  {
+                                                  "path":  "C:\\runtime\\msvcp100.dll",
+                                                  "present":  true,
+                                                  "length":  608080
+                                              },
+                             "msvcr100.dll":  {
+                                                  "path":  "C:\\runtime\\msvcr100.dll",
+                                                  "present":  true,
+                                                  "length":  829264
+                                              },
+                             "msvcp140.dll":  {
+                                                  "path":  "C:\\runtime\\msvcp140.dll",
+                                                  "present":  true,
+                                                  "length":  643512
+                                              },
+                             "msvcp140_codecvt_ids.dll":  {
+                                                              "path":  "C:\\runtime\\msvcp140_codecvt_ids.dll",
+                                                              "present":  true,
+                                                              "length":  31160
+                                                          },
+                             "vcruntime140.dll":  {
+                                                      "path":  "C:\\runtime\\vcruntime140.dll",
+                                                      "present":  true,
+                                                      "length":  178616
+                                                  },
+                             "vcruntime140_1.dll":  {
+                                                        "path":  "C:\\runtime\\vcruntime140_1.dll",
+                                                        "present":  true,
+                                                        "length":  50112
+                                                    },
+                             "set_dll_directory":  true,
+                             "loadlibrary:C:\\runtime\\msvcp100.dll":  {
+                                                                           "handle_present":  true,
+                                                                           "last_error":  203,
+                                                                           "message":  ""
+                                                                       },
+                             "loadlibrary:C:\\runtime\\msvcr100.dll":  {
+                                                                           "handle_present":  true,
+                                                                           "last_error":  203,
+                                                                           "message":  ""
+                                                                       },
+                             "loadlibrary:C:\\runtime\\msvcp140.dll":  {
+                                                                           "handle_present":  true,
+                                                                           "last_error":  203,
+                                                                           "message":  ""
+                                                                       },
+                             "loadlibrary:C:\\runtime\\msvcp140_codecvt_ids.dll":  {
+                                                                                       "handle_present":  true,
+                                                                                       "last_error":  203,
+                                                                                       "message":  ""
+                                                                                   },
+                             "loadlibrary:C:\\runtime\\vcruntime140.dll":  {
+                                                                               "handle_present":  true,
+                                                                               "last_error":  203,
+                                                                               "message":  ""
+                                                                           },
+                             "loadlibrary:C:\\runtime\\vcruntime140_1.dll":  {
+                                                                                 "handle_present":  true,
+                                                                                 "last_error":  203,
+                                                                                 "message":  ""
+                                                                             },
+                             "loadlibrary:C:\\Unity\\Editor\\OpenRL_pthread.dll":  {
+                                                                                       "handle_present":  true,
+                                                                                       "last_error":  126,
+                                                                                       "message":  ""
+                                                                                   },
+                             "loadlibrary:C:\\Unity\\Editor\\tbb.dll":  {
+                                                                            "handle_present":  true,
+                                                                            "last_error":  203,
+                                                                            "message":  ""
+                                                                        },
+                             "loadlibrary:C:\\Unity\\Editor\\embree.dll":  {
+                                                                               "handle_present":  true,
+                                                                               "last_error":  0,
+                                                                               "message":  ""
+                                                                           },
+                             "loadlibrary:C:\\Unity\\Editor\\OpenRL.dll":  {
+                                                                               "handle_present":  true,
+                                                                               "last_error":  6,
+                                                                               "message":  ""
+                                                                           },
+                             "loadlibrary:C:\\Unity\\Editor\\SketchUpAPI.dll":  {
+                                                                                    "handle_present":  true,
+                                                                                    "last_error":  0,
+                                                                                    "message":  ""
+                                                                                },
+                             "loadlibrary:C:\\Unity\\Editor\\libfbxsdk.dll":  {
+                                                                                  "handle_present":  true,
+                                                                                  "last_error":  0,
+                                                                                  "message":  ""
+                                                                              },
+                             "loadlibrary:C:\\Unity\\Editor\\s3tcompress.dll":  {
+                                                                                    "handle_present":  true,
+                                                                                    "last_error":  0,
+                                                                                    "message":  ""
+                                                                                },
+                             "loadlibrary:C:\\Unity\\Editor\\etccompress.dll":  {
+                                                                                    "handle_present":  true,
+                                                                                    "last_error":  0,
+                                                                                    "message":  ""
+                                                                                },
+                             "loadlibrary:C:\\Unity\\Editor\\ispc_texcomp.dll":  {
+                                                                                     "handle_present":  true,
+                                                                                     "last_error":  0,
+                                                                                     "message":  ""
+                                                                                 },
+                             "loadlibrary:C:\\Unity\\Editor\\compress_bc7e.dll":  {
+                                                                                      "handle_present":  true,
+                                                                                      "last_error":  0,
+                                                                                      "message":  ""
+                                                                                  },
+                             "loadlibrary:C:\\Unity\\Editor\\FreeImage.dll":  {
+                                                                                  "handle_present":  true,
+                                                                                  "last_error":  3,
+                                                                                  "message":  ""
+                                                                              },
+                             "loadlibrary:C:\\Unity\\Editor\\WinPixEventRuntime.dll":  {
+                                                                                           "handle_present":  true,
+                                                                                           "last_error":  3,
+                                                                                           "message":  ""
+                                                                                       },
+                             "loadlibrary:C:\\Unity\\Editor\\umbraoptimizer64.dll":  {
+                                                                                         "handle_present":  true,
+                                                                                         "last_error":  0,
+                                                                                         "message":  ""
+                                                                                     },
+                             "loadlibrary:C:\\Unity\\Editor\\NativeProxyHelper.dll":  {
+                                                                                          "handle_present":  true,
+                                                                                          "last_error":  0,
+                                                                                          "message":  ""
+                                                                                      },
+                             "loadlibrary:C:\\Unity\\Editor\\Unity.dll":  {
+                                                                              "handle_present":  true,
+                                                                              "last_error":  0,
+                                                                              "message":  ""
+                                                                          }
+                         },
+    "process_started":  true,
+    "process_exit_code":  198,
+    "timed_out":  false,
+    "start_error":  "",
+    "started_utc":  "2026-09-13T16:59:35.5610619Z",
+    "ended_utc":  "2026-09-13T16:59:43.4549523Z",
+    "report_present":  false,
+    "success_marker":  false,
+    "failure_marker":  false,
+    "licensing_signals":  {
+                              "module_seen":  true,
+                              "access_token_error":  true,
+                              "code_10":  true,
+                              "license_client_seen":  true
+                          },
+    "shutdown_signals":  {
+                             "batchmode_quit":  false,
+                             "shut_down":  false,
+                             "exited_batchmode":  false,
+                             "return_code_zero":  false,
+                             "abort_threads":  false,
+                             "memory_leaks":  false
+                         },
+    "remaining_unity_process_count_before_sandbox_shutdown":  2,
+    "shutdown_request":  "sandbox-only: shutdown.exe /s /t 0 /f"
+}

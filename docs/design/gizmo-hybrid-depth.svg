@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="600" viewBox="0 0 700 600">
+  <rect width="700" height="600" rx="28" fill="#0b1f2b"/>
+  <path d="M125 450 L430 450 L535 365 L230 365 Z" fill="#153e51" stroke="#6db5c8" stroke-width="3"/>
+  <path d="M230 365 L230 245 L535 245 L535 365" fill="#1d5368" opacity=".55" stroke="#72e3ef" stroke-width="3"/>
+  <line x1="335" y1="365" x2="605" y2="365" stroke="#ff6f78" stroke-width="14"/>
+  <path d="M605 365 l-34 -20 l0 40 z" fill="#ff6f78"/>
+  <line x1="335" y1="365" x2="335" y2="110" stroke="#65e59a" stroke-width="14"/>
+  <path d="M335 110 l-20 34 l40 0 z" fill="#65e59a"/>
+  <line x1="335" y1="365" x2="170" y2="535" stroke="#58b9ff" stroke-width="14"/>
+  <path d="M170 535 l10 -38 l28 27 z" fill="#58b9ff"/>
+  <circle cx="335" cy="365" r="26" fill="#a884ff" stroke="#e8fbff" stroke-width="6"/>
+  <path d="M220 320 A130 130 0 1 1 467 310" fill="none" stroke="#58d9e7" stroke-width="11"/>
+  <path d="M469 310 l-30 0 l15 25 z" fill="#58d9e7"/>
+  <text x="612" y="370" fill="#ff6f78" font-family="Segoe UI,Arial" font-weight="700" font-size="25">X</text>
+  <text x="346" y="95" fill="#65e59a" font-family="Segoe UI,Arial" font-weight="700" font-size="25">Y</text>
+  <text x="117" y="554" fill="#58b9ff" font-family="Segoe UI,Arial" font-weight="700" font-size="25">Z</text>
+  <text x="70" y="90" fill="#d9f6fb" font-family="Segoe UI,Arial" font-weight="700" font-size="27">HYBRID DEPTH · 2.5D/3D</text>
+</svg>
