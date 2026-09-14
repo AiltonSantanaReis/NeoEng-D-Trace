@@ -78,6 +78,7 @@ def test_main_window_registers_existing_actions_with_stable_ids() -> None:
             "edit.undo",
             "edit.redo",
             "view.settings",
+            "integration.unity",
             "view.grid",
             "view.snap",
             "view.gizmo",

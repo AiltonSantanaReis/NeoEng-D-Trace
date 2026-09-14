@@ -22,6 +22,7 @@ def register_main_window_commands(registry: CommandRegistry, window: Any) -> Non
             ("edit.undo", window.undo_action),
             ("edit.redo", window.redo_action),
             ("view.settings", window.settings_action),
+            ("integration.unity", window.unity_integration_action),
             ("view.mask_viewer", window.mask_viewer_action),
             ("view.collision_overlay", window.collision_overlay_action),
             ("view.fit", window.act_fit),

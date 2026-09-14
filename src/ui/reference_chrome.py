@@ -290,6 +290,7 @@ def configure_reference_top_toolbar(window: Any) -> QToolBar:
             window.act_xray3,
             window.mask_viewer_action,
             window.settings_action,
+            window.unity_integration_action,
         ),
     )
     collision_button = _command_button(

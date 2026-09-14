@@ -31,6 +31,7 @@ ACTION_TOOLTIP_KEYS = {
     "scenario_reset_action": "scenario_reset",
     "scenario_export_action": "scenario_export",
     "settings_action": "settings",
+    "unity_integration_action": "unity_integration",
     "language_action": "language",
 }
 
@@ -72,3 +73,6 @@ def refresh_language_components(window) -> None:
     dialog = getattr(window, "_mask_viewer_dialog", None)
     if dialog is not None and hasattr(dialog, "update_language"):
         dialog.update_language(language)
+    unity_dialog = getattr(window, "unity_integration_dialog", None)
+    if unity_dialog is not None and hasattr(unity_dialog, "update_language"):
+        unity_dialog.update_language(language)

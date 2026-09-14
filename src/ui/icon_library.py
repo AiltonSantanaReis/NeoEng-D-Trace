@@ -166,6 +166,13 @@ _ICON_BODIES: Final[dict[str, tuple[str, str]]] = {
         '<circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/>'
         '<circle cx="17" cy="17" r="2"/>',
     ),
+    "unity": (
+        "Unity integration",
+        '<path d="M8 5.5h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H8'
+        'a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/>'
+        '<path d="M9.5 9.5h5M9.5 13h5M9.5 16.5h2"/>'
+        '<path d="M4 8.5V6a2 2 0 0 1 2-2h2M20 8.5V6a2 2 0 0 0-2-2h-2"/>',
+    ),
     "move": (
         "move viewport",
         '<path d="M12 3v18M3 12h18"/>'
@@ -408,6 +415,7 @@ def configure_main_window_controls(window: Any) -> None:
         "act_snap": "snap",
         "act_gizmo": "gizmo",
         "settings_action": "settings",
+        "unity_integration_action": "unity",
         "act_lit": "lit",
         "act_xray1": "xray_1",
         "act_xray2": "xray_2",
