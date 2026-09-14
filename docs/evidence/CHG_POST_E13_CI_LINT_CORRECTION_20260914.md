@@ -90,6 +90,14 @@ Linux também falhou no passo de testes antes de produzir cobertura. A falha é
 corrigida ajustando a expectativa para a saída observável e o caminho
 selecionado, sem alterar a tradução nem o comportamento do diálogo.
 
+Na execução `34897091060`, Linux passou a suíte completa com `2653 passed` e
+`2 skipped`, a cobertura total foi `91.36%` e a política integrada passou. No
+Windows, os `247/247` arquivos e `2655` testes passaram, com `0` falhas, `0`
+erros e `2` skips controlados; a única reprovação foi a política integrada,
+que observou `9414/11076` branches cobertos (`84.99%`) contra o mínimo fixo de
+`85.00%`. A causa não foi funcionalidade quebrada: faltava executar um caminho
+de erro do diálogo Unity, mantendo a mudança `IN_PROGRESS` até nova execução.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
@@ -114,6 +122,10 @@ selecionado, sem alterar a tradução nem o comportamento do diálogo.
   acima do limite, executável inválido e deduplicação de candidatos vindos do
   ambiente e do `PATH`; esses testes exercitam comportamento defensivo real e
   não alteram a política de cobertura.
+- Inclusão de um teste funcional de recuperação do diálogo Unity para Hub não
+  encontrado, falha de inicialização do processo e falha de abertura de URL;
+  esses caminhos são observáveis pelo usuário e cobrem a lacuna de branch sem
+  mudar o threshold nem introduzir skips.
 - Remoção somente do import `os` comprovadamente não utilizado.
 - Renomeação de um identificador de teste excessivamente longo, sem mudar o
   cenário, as asserções ou o contrato verificado.

@@ -292,6 +292,37 @@ def test_open_hub_uses_selected_executable_without_shell_or_arguments(
         qt_app.processEvents()
 
 
+def test_dialog_reports_unavailable_hub_failed_launch_and_url(
+    qt_app,
+    tmp_path: Path,
+    monkeypatch,
+):
+    hub, _editor, _environment = _fake_unity_installation(tmp_path)
+    window = MainWindow(Scene(), AuditConfig())
+    dialog = UnityIntegrationDialog(window)
+    warnings: list[tuple[object, ...]] = []
+    monkeypatch.setattr(
+        "src.ui.unity_integration_settings.QMessageBox.warning",
+        lambda *args: warnings.append(args),
+    )
+    monkeypatch.setattr(QProcess, "startDetached", lambda *_args: False)
+    monkeypatch.setattr(QDesktopServices, "openUrl", lambda _url: False)
+    try:
+        dialog._open_hub()
+        dialog.hub_path.setText(str(hub))
+        dialog._open_hub()
+        dialog._open_url("https://id.unity.com/")
+
+        assert len(warnings) == 3
+        assert "not found" in warnings[0][2].lower()
+        assert "failed" in warnings[1][1].lower()
+        assert "failed" in warnings[2][1].lower()
+    finally:
+        dialog.deleteLater()
+        window.close()
+        qt_app.processEvents()
+
+
 def test_links_are_delegated_to_desktop_services_without_credentials(
     qt_app, monkeypatch
 ):
