@@ -313,10 +313,14 @@ def test_dialog_reports_unavailable_hub_failed_launch_and_url(
         dialog._open_hub()
         dialog._open_url("https://id.unity.com/")
 
+        t = dialog._translations
         assert len(warnings) == 3
-        assert "not found" in warnings[0][2].lower()
-        assert "failed" in warnings[1][1].lower()
-        assert "failed" in warnings[2][1].lower()
+        assert warnings[0][1] == t["unity_hub_not_found_title"]
+        assert warnings[0][2] == t["unity_hub_not_found_message"]
+        assert warnings[1][1] == t["unity_open_failed_title"]
+        assert warnings[1][2] == t["unity_open_failed_message"]
+        assert warnings[2][1] == t["unity_url_failed_title"]
+        assert warnings[2][2] == t["unity_url_failed_message"]
     finally:
         dialog.deleteLater()
         window.close()

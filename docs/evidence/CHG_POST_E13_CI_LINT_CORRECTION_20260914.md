@@ -98,6 +98,15 @@ que observou `9414/11076` branches cobertos (`84.99%`) contra o mínimo fixo de
 `85.00%`. A causa não foi funcionalidade quebrada: faltava executar um caminho
 de erro do diálogo Unity, mantendo a mudança `IN_PROGRESS` até nova execução.
 
+Na execução `34899805281`, o Linux executou `2653 passed` e `2 skipped`, mas
+o teste recém-adicionado falhou ao assumir que a mensagem de Hub ausente
+conteria literalmente `not found`; a mensagem real é a instrução localizada
+para selecionar ou instalar o Unity Hub. No Windows, a execução nem chegou à
+suíte: o passo de sincronização das dependências terminou com
+`ReadTimeoutError`/`ConnectionError` de rede. Ambos os resultados ficam
+preservados como evidência; a correção da asserção não altera o comportamento
+do produto e a nova execução deverá repetir os gates completos.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
