@@ -46,7 +46,6 @@ repositório; a sanitização remove somente prefixos locais.
 ## Relação com os gates perigosos
 
 Este é o gate host seguro. A prova funcional definitiva de symlink está em
-`EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md` (`PASS_SANDBOX`, r4,
+`EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md` (`PASS`, r4,
 31/31, 0 skips, 0 falhas/erros) e não deve ser repetida por rotina. Os
 diagnósticos Unity continuam controlados, sem nova execução nativa.
-

@@ -2,7 +2,7 @@
 
 **ID:** `CHG-POST-E13-UNITY-SANDBOX-KEEPALIVE-20260913`
 
-**Estado:** `IN_PROGRESS`
+**Estado:** `PASS`
 
 **Data:** 2026-09-13
 
@@ -73,7 +73,7 @@ O ciclo novo r16 foi preparado com:
 O r16 foi executado depois da confirmação manual do proprietário. O método do
 pacote passou, mas a instalação persistida 6000.6 não foi observada no mount
 `C:\UnityInstall`; o fallback conhecido 6000.5.7f1 foi selecionado. Licensing e
-shutdown limpos do Unity continuam `BLOCKED_PARTIAL` pelos diagnósticos
+shutdown limpos do Unity continuam `BLOCKED` pelos diagnósticos
 preservados no resultado real.
 
 ## Resultado da execução r16
@@ -107,9 +107,9 @@ versionado, e a projeção sanitizada passou na varredura de privacidade.
 | regressão oficial sem filtros | `PASS` | `artifacts/audit-post-e13-official-suite-safe-host-20260913-r14/official-pytest.log`: `2639 passed`, `2 skipped`, `0 failed`, `0 warnings`; log sanitizado `920C7189382C9606AD08A1A36A4000510340A3316E8025D666712338CE1CE222`, JUnit sanitizado `E0E4C70D0A93E1AC45DA5537D423DA15290DDD2F67482E16F156DCF56AB057CB`, metadata `D06F8FC9FFE4EB105ADB233D6E242E9DF74B9770AA66822602FEED2DDFE7FD99` |
 | instalação persistida no Sandbox | `PENDING_EVIDENCE` | `C:\UnityInstall` estava vazio no inventário r16; a instalação 6000.6 não foi atribuída, e o fallback 6000.5.7f1 foi usado |
 | método/relatório do pacote | `PASS` | resultado r16 e `package-report.json`: `Success=true`, processo com código `0` |
-| Unity/licensing limpo | `BLOCKED_PARTIAL` | r16 resolveu `Unity Personal`/`Unlimited`, mas preservou `Code 10` e token indisponível |
-| shutdown limpo do Unity | `BLOCKED_PARTIAL` | quit/retorno `0` presentes, mas 29 entradas compatíveis no snapshot e nenhum `Shut down.` exato |
-| shutdown da Sandbox | `PASS_SANDBOX_ONLY` | marcador interno e processos da Sandbox terminaram no polling posterior |
+| Unity/licensing limpo | `BLOCKED` | r16 resolveu `Unity Personal`/`Unlimited`, mas preservou `Code 10` e token indisponível |
+| shutdown limpo do Unity | `BLOCKED` | quit/retorno `0` presentes, mas 29 entradas compatíveis no snapshot e nenhum `Shut down.` exato |
+| shutdown da Sandbox | `PASS` | marcador interno e processos da Sandbox terminaram no polling posterior; escopo exclusivo da VM descartável |
 
 ## Regra de avanço
 

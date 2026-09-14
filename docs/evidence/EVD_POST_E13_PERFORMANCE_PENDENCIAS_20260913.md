@@ -25,8 +25,8 @@ escala permanece `FAIL`; a redução não pode ser promovida a `PASS` por si só
 
 - **Memória longa:** `PASS` no ambiente controlado; o relatório dedicado registra
   26 workloads, 250 ciclos por workload e observações de RSS/private.
-- **GPU/janela nativa:** o workload CUDA dedicado está
-  `PASS_CONTROLLED_GPU_WORKLOAD`, mas o contador de frames/GPU do caminho
+- **GPU/janela nativa:** o workload CUDA dedicado está `PASS` no escopo
+  controlado, mas o contador de frames/GPU do caminho
   `QGraphicsView` continua `NOT_APPLICABLE`; não há equivalência de renderer ou
   FPS declarada.
 - **Equivalência runtime:** permanece separada das medições estruturais e não
@@ -37,7 +37,7 @@ reconstrução/snapshot/repintura do viewport, não um hot spot demonstrado no
 kernel X-Ray. As alterações de logging CuPy e retry do atlas não mudam esse
 caminho; por isso não há rerun de desempenho artificial nesta etapa.
 
-## Decisões isoladas no final
+## Decisões que estavam abertas antes da qualificação controlada
 
 1. autorizar um novo contrato de desempenho para otimizar a reconstrução/
    snapshot residual, com perfil causal, equivalência visual/funcional,
@@ -72,20 +72,40 @@ RSS/private observados em todas as cargas. A evidência completa, incluindo
 limitações e hashes, está em
 `docs/evidence/EVD_POST_E13_SOAK_MEMORIA_GPU_CONTROLADO_20260913.md`.
 
-O gate de memória longa passa a `PASS` para o ambiente controlado qualificado.
-O gate de workload GPU dedicado passa a `PASS_CONTROLLED_GPU_WORKLOAD`: a
-qualificação CUDA em container sem rede executou 36.408 operações em 20 segundos,
+O gate de memória longa permanece `PASS` para o ambiente controlado qualificado.
+O gate do workload GPU dedicado também é `PASS` no escopo CUDA controlado: a
+qualificação em container sem rede executou 36.408 operações em 20 segundos,
 coletou 38 amostras reais e observou até 91% de utilização na RTX 3070 Ti, sem
 erros. O contador de frames/GPU do `QGraphicsView` continua `NOT_APPLICABLE`,
 porque o caminho do editor é offscreen/software e não oferece essa métrica; isso
-não é uma aprovação de equivalência visual ou de FPS do editor. O limite estrutural
-medido continua `FAIL` no relatório e `APPROVED_BY_OWNER` como decisão de escopo.
+não é uma aprovação de equivalência visual ou de FPS do editor. O limite
+estrutural medido continua `FAIL` no relatório e aceito formalmente como decisão
+de escopo.
 
-O gate restante desta frente é a execução real de licensing/shutdown do Unity em
-ambiente Windows dedicado. A primeira tentativa controlada está registrada como
-`BLOCKED` em
-`docs/evidence/EVD_POST_E13_UNITY_CONTROLADO_SANDBOX_20260913.md`: uma VM
-Windows Sandbox preexistente manteve o recurso ocupado, a fixture não foi
-montada e nenhum Unity foi executado. A classificação de logs históricos
-permanece `PASS` funcional com ambiente limpo/shutdown `PENDING_EVIDENCE`; não
-houve execução nativa do Unity neste host.
+## Resultado corrente após o r16
+
+O r16 foi concluído em Windows Sandbox descartável após login e confirmação
+manual do proprietário. Unity `6000.5.7f1` foi o editor efetivamente executado;
+`6000.6` não apareceu no mount persistente e não é atribuído a este resultado.
+O processo iniciou sem timeout, executou o método do pacote e retornou `0`.
+
+O relatório `package-report.json` registra `com.neoeng.dtrace` `0.3.0`,
+`SourcePolicy=source-only` e `7/7` checks aprovados. Portanto, o gate de
+execução real e o contrato do pacote são `PASS` no escopo controlado.
+
+O gate de licensing limpo permanece `BLOCKED`: `Unity Personal`/`Unlimited` foi
+resolvido, mas `Code 10`, token indisponível, WMI e `Curl error 42` foram
+observados e preservados. O gate de shutdown limpo do Unity também permanece
+`BLOCKED`: houve quit de batchmode, saída de batchmode e retorno `0`, porém o
+marcador textual `Shut down.` não apareceu e havia 29 entradas de processos
+compatíveis antes do descarte, sem nomes individualizados. O shutdown/descarte
+da Sandbox é `PASS` somente no escopo da VM descartável; a segurança do host é
+`PASS`, pois nenhuma operação perigosa foi executada nativamente.
+
+O relatório detalhado, os hashes e a regra de não repetição estão em
+`docs/evidence/EVD_POST_E13_UNITY_R16_RESULTADO_20260914.md`.
+
+Assim, esta evidência geral permanece `IN_PROGRESS`. As únicas lacunas técnicas
+reais desta frente são licensing limpo e shutdown limpo do Unity; a importação
+nativa do asset 3D destinado ao Unity é uma pendência separada do relatório do
+asset e não foi mascarada por este r16.

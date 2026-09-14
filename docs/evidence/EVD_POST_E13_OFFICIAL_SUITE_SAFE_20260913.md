@@ -12,7 +12,7 @@ Esta evidência fecha a correção dos cinco `DeprecationWarning` de
 `QMouseEvent`, registra a higiene de caminhos e comprova a regressão oficial
 completa sem executar symlink ou shutdown nativamente. A suíte foi executada
 no Windows host com a variável de autorização controlada ausente; os testes
-de symlink terminaram como `SKIP_CONTROLLED_ONLY` antes de qualquer chamada de
+de symlink terminaram como `skipped` antes de qualquer chamada de
 filesystem. A prova real desses dois casos está no sandbox Docker r4.
 
 Governança: [GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md](../GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md).

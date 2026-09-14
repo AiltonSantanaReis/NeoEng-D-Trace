@@ -2,7 +2,7 @@
 
 **ID da feature:** `AUD-POST-E13-SYMLINK-SANDBOX-20260913`
 **Status documental:** `PASS`
-**Modo de execução:** `PASS_SANDBOX`
+**Modo de execução:** Sandbox descartável; o status do gate é `PASS` neste escopo
 **Data:** 2026-09-13
 **Escopo:** requalificação definitiva dos testes de segurança de integração que
 dependem de criação de symlink.
@@ -110,12 +110,11 @@ auditoria histórica.
 
 ## Relação com o checkout local
 
-Os dois skips que aparecem na suíte Windows são agora classificados como
-`SKIP_CONTROLLED_ONLY`: a barreira encerra o teste antes de qualquer chamada
-de `symlink_to`. O resultado é esperado sob a política de segurança adotada e
-permanece separado do gate controlado `PASS_SANDBOX`; nenhum skip foi
-convertido artificialmente em passagem. A limitação anterior
-`SKIP_PRIVILEGE_LIMITATION` e o log oficial correspondente permanecem
+Os dois testes que aparecem como `skipped` na suíte Windows são interrompidos
+pela barreira antes de qualquer chamada de `symlink_to`. Esse resultado é
+esperado sob a política de segurança adotada e permanece separado do gate
+controlado `PASS`; nenhum `skipped` foi convertido artificialmente em passagem.
+A limitação de privilégio anterior e o log oficial correspondente permanecem
 preservados nos artefatos históricos.
 
 ## Regra de reexecução

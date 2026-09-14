@@ -1,0 +1,22 @@
+run_id=post-e13-doc-reconciliation-20260914-rerun
+status=PASS
+observed_at=2026-09-14
+checkout_branch=Ailton/audit-post-e13-scenario-editor-20260912
+source_commit=70ea28984f25fc388ddbb70cbfcccf2bd1381a
+governance_sha256=D933DB005B7110C391CF776CDA3014CE348D61A91A5E9902AEEA619185EC3EA0
+python=3.11.9
+pytest=9.1.1
+tzdata=2026.4
+imports_verified_from_active_checkout=yes
+command=python -m pytest --tb=short --junitxml=artifacts/audit-post-e13-doc-reconciliation-20260914/official-junit-rerun.xml -q
+collected=2643
+passed=2641
+skipped=2
+failed=0
+errors=0
+warnings=0
+duration_seconds=81.78
+skip_1=tests/test_integration_sync.py::test_plan_rejects_symlink_escape
+skip_2=tests/test_integration_sync.py::test_plan_rejects_symlink_destination
+host_symlink_or_shutdown_executed=no
+notes=Skips are protected host tests; definitive symlink evidence is controlled Sandbox only. Unity licensing/shutdown gates remain separate BLOCKED/PENDING_EVIDENCE and are not changed by this suite.

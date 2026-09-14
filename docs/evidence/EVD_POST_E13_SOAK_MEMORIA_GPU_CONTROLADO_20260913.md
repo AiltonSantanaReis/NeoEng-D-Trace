@@ -2,7 +2,7 @@
 
 **ID:** `EVD-POST-E13-SOAK-MEMORIA-GPU-CONTROLADO-20260913`
 **Status do soak de memória:** `PASS`
-**Status do workload GPU controlado:** `PASS_CONTROLLED_GPU_WORKLOAD`
+**Status do workload GPU controlado:** `PASS` no escopo CUDA controlado
 **Status GPU do caminho QGraphicsView:** `NOT_APPLICABLE`
 **Data:** 2026-09-13
 **Commit da fonte montada:** `e727e9d470b3256b05800cda59d9aa2401a1959f`
@@ -101,7 +101,7 @@ Commit que promoveu runner, relatório e ponteiros:
 
 | Critério | Resultado |
 |---|---:|
-| Status | `PASS_CONTROLLED_GPU_WORKLOAD` |
+| Status | `PASS` no escopo CUDA controlado |
 | Driver CUDA | `cuInit`, contexto, alocação e liberação: `0` |
 | Dispositivo | `NVIDIA GeForce RTX 3070 Ti`, 1 dispositivo |
 | Operações | `36.408` em `20,0 s` |

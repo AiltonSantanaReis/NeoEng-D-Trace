@@ -16,7 +16,7 @@ cobertura ou supressão de warnings.
 
 Os testes potencialmente danosos não foram executados nativamente. O guard
 `NEOENG_ALLOW_CONTROLLED_SYMLINK_TEST=0` manteve os dois casos de symlink como
-`SKIP_CONTROLLED_ONLY`; a execução definitiva desses casos está comprovada
+`skipped` pela barreira de segurança; a execução definitiva desses casos está comprovada
 separadamente pelo sandbox r4.
 
 ## Execução real
@@ -63,4 +63,3 @@ symlink só deve ser repetido se houver alteração no teste de integração,
 guard, runner/Dockerfile, dependências/digest/runtime, integridade dos
 artefatos ou decisão formal. Shutdown nativo continua fora deste host e não
 foi inferido como aprovado por esta suíte.
-

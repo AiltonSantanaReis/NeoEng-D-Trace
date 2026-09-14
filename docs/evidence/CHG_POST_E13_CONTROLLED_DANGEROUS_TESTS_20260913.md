@@ -11,7 +11,7 @@
 Os dois testes que precisam criar links simbólicos agora exigem a variável de
 ambiente `NEOENG_ALLOW_CONTROLLED_SYMLINK_TEST=1` antes de executar
 `Path.symlink_to`. Sem essa autorização controlada, o teste termina como
-`SKIP_CONTROLLED_ONLY` antes de tocar o sistema de arquivos do host. O código
+`skipped` antes de tocar o sistema de arquivos do host. O código
 de produção em `src/exporters/integration_sync.py` não foi alterado.
 
 O runner Docker aprovado define essa variável somente dentro do container. A
@@ -34,7 +34,7 @@ runner sandbox.
 
 ## Verificação exigida
 
-1. teste focado do guard sem a variável, observando `SKIP_CONTROLLED_ONLY`;
+1. teste focado do guard sem a variável, observando o resultado `skipped`;
 2. requalificação do arquivo completo no sandbox com a variável autorizada;
 3. suíte oficial completa no host sem essa variável;
 4. inspeção final de que nenhum reparse point/symlink foi criado no artefato

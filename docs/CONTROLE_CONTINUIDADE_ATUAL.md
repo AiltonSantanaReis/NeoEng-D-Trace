@@ -15,7 +15,7 @@ os gates pós-E13; o Unity r14 alcançou a compilação real e revelou uma falha
 referências do pacote que foi corrigida e requalificada no r16. O r16 foi
 executado após a confirmação manual do proprietário: o método do pacote retornou
 `Success=true` e o processo saiu com código `0`. Licensing e shutdown limpos
-continuam parciais: `Unity Personal`/`Unlimited` foi resolvido, mas `Code 10`,
+continuam `BLOCKED`: `Unity Personal`/`Unlimited` foi resolvido, mas `Code 10`,
 token indisponível, warnings WMI/erro Curl e 29 entradas de processos compatíveis
 foram preservados. A instalação 6000.6 não apareceu no mount persistente
 `C:\UnityInstall`; o teste usou o fallback conhecido 6000.5.7f1. As esperas r15
@@ -24,7 +24,13 @@ e a causa do fechamento automático continuam preservadas como histórico.
 referenciadas foram movidas de forma reversível para
 `archive/legacy/artifacts/post-e13-historical-20260913/`, com manifesto e
 hashes em `docs/evidence/CHG_POST_E13_ARQUIVO_LEGADO_ARTEFATOS_20260913.md`.
-**Estado:** `POST_E13_IN_PROGRESS / E13 fechado e congelado como histórico`
+**Evidência corrente do Unity r16:**
+`docs/evidence/EVD_POST_E13_UNITY_R16_RESULTADO_20260914.md`; o pacote passou
+no Unity controlado, enquanto licensing/shutdown limpos permanecem `BLOCKED`.
+O asset 3D destinado ao Unity está documentado em
+`docs/evidence/RELATORIO_ASSET_3D_UNITY_20260914.md` e sua importação nativa
+permanece `PENDING_EVIDENCE`.
+**Estado:** `IN_PROGRESS` — E13 fechado e congelado como histórico
 **Plano mestre adotado:** `52e9896d2ecf1bc928fb27aca5b8091890c580d7`  
 **E01:** checkpoint técnico concluído; aceite final pendente
 **E02:** checkpoint técnico aprovado; aceite final pendente
@@ -73,16 +79,14 @@ rastreado pelo Git foi restaurado; a auditoria está em
 `0C9E05251F4F973B04520A1D3A497BDBCBC64EDA12B2BF2CD4FEF17C4E72BE7B`). O
 pacote corrente da suíte oficial permanece em `artifacts/` e não foi arquivado.
 
-A regressão oficial segura mais recente foi capturada sem filtros em
-`artifacts/audit-post-e13-official-suite-safe-host-20260913-r14/official-pytest.log`,
-com SHA-256 `920C7189382C9606AD08A1A36A4000510340A3316E8025D666712338CE1CE222`:
-`2639 passed, 2 skipped, 0 warnings` em 77,95 s. O JUnit sanitizado tem SHA-256
-`E0E4C70D0A93E1AC45DA5537D423DA15290DDD2F67482E16F156DCF56AB057CB` e o
-metadata tem SHA-256
-`D06F8FC9FFE4EB105ADB233D6E242E9DF74B9770AA66822602FEED2DDFE7FD99`.
-O pacote r12 anterior permanece registrado como baseline histórica, e o r3
-anterior, inclusive o log com cinco warnings preservado antes da correção,
-continua disponível para comparação.
+A requalificação oficial corrente foi registrada sem filtros em
+`docs/evidence/EVD_POST_E13_SUITE_RECONCILIACAO_20260914.md`:
+`2641 passed, 2 skipped, 0 warnings` em 81,78 s. O JUnit bruto aprovado foi
+preservado no workspace em
+`artifacts/audit-post-e13-doc-reconciliation-20260914/official-junit-rerun.xml`,
+com SHA-256 `644F4AD9F62ED09AE619944387617E5785EE912FC0596FD38C197A61B75A625E`.
+As duas tentativas não aprovadas e a correção ambiental permanecem descritas na
+mesma evidência; o r14 e o r12 continuam registrados como baselines históricas.
 
 Antes de qualquer nova build, registrar no mesmo pacote:
 
@@ -106,18 +110,18 @@ requalificação corrente de runtime está em
 
 | Gate | Estado | Interpretação |
 |---|---|---|
-| Suíte oficial | `PASS` | r14: 2639 passaram, 2 skips controlados e 0 warnings na requalificação sem filtros; os dois skips são symlink protegido no host e foram comprovados no sandbox; failures históricos permanecem preservados |
-| Estática | `PASS_LOCAL_FOCUSED` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
-| Symlink no Sandbox | `PASS_SANDBOX` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
-| Symlink no checkout local | `SKIP_CONTROLLED_ONLY` | 2 skips preservados, a barreira impede criação nativa antes de `symlink_to`; não convertidos em PASS |
-| Captura automatizada | `PASS_AUTOMATED_CAPTURE_ONLY` | janela real capturada por handle; manifests final10 hashados |
-| Auditoria nativa/humana | `PASS` para a revisão humana; lote técnico `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa e workload CUDA dedicado estão qualificados em ambiente controlado, enquanto o contador de frames/GPU do QGraphicsView permanece `NOT_APPLICABLE` por ausência de instrumentação; Unity r16 iniciou em Sandbox com rede habilitada, validou a correção declarativa e produziu `package-report.json` com `Success=true`; licensing e shutdown limpos permanecem `BLOCKED_PARTIAL` pelos diagnósticos preservados |
+| Suíte oficial | `PASS` | requalificação corrente: 2641 passaram, 2 skips controlados e 0 warnings; os dois skips são symlink protegido no host e foram comprovados no Sandbox; falhas de tentativa, incluindo tzdata e fingerprint intermitente, permanecem preservadas |
+| Estática | `PASS` | compileall e parser PowerShell passaram; matriz funcional/documental focal passou |
+| Symlink no Sandbox | `PASS` | requalificação definitiva controlada r4 vinculada ao commit consolidado: 31/31 passaram, 0 skips, 0 falhas/erros; JUnit, relatório e hashes em `artifacts/audit-post-e13-symlink-sandbox-20260913-r4/` |
+| Symlink no checkout local | `NOT_APPLICABLE` | 2 testes foram registrados como `skipped`; a barreira impede criação nativa antes de `symlink_to` e não foi convertida em PASS |
+| Captura automatizada | `PASS` | janela real capturada por handle; manifests final10 hashados; a captura automatizada não substitui revisão humana |
+| Auditoria nativa/humana | `IN_PROGRESS` | checkpoints nativos do editor, Tilemap/Tileset, partículas e híbrido 3D passaram; a revisão humana foi aprovada em `docs/evidence/DECISAO_REVISAO_HUMANA_APROVADA_POS_E13_20260913.md`; responsividade residual continua `FAIL` aceita formalmente, memória longa e workload CUDA dedicado estão qualificados em ambiente controlado, enquanto o contador de frames/GPU do QGraphicsView permanece `NOT_APPLICABLE` por ausência de instrumentação; Unity r16 iniciou em Sandbox com rede habilitada, validou a correção declarativa e produziu `package-report.json` com `Success=true`; licensing e shutdown limpos permanecem `BLOCKED` pelos diagnósticos preservados |
 | Correção controlada E00 | `PASS_LOCAL` | toolbar desktop dimensionada pelo `sizeHint`; regressão responsiva coberta |
 | Build oficial | `PASS` | build portátil r5 da fonte `98ee5b4` tem executável `1D3AC2A89C35F807AEC9E707310F410FC71785ABF463E9A65DF6ACFBA3FAF403`, ZIP `63A71E5501F5165A4E7A90AD2161605C4DB4631B2DF510F1F36BC3BC203BD713` e smoke `SUCCESS` em 11 checks; `tzdata` carregado sem hidden import ausente e warnings opcionais preservados |
 | Runtime funcional | `PASS` | build v4 abriu/fechou o editor, exportou composição, salvou/reabriu, mostrou erro real, recuperou a cópia válida, salvou e exportou novamente; os dois pacotes foram revalidados com Tilemap/runtime hash-bound |
 | Runtime nativo de partículas | `PASS` | sidecar V1 e origem autorada V2 consumidos; Godot gerou captura rasterizada, Unity passou em `batchmode/nographics`, guards negativos passaram e a revisão humana foi aprovada |
 | Exportação profissional de partículas | `PASS` | auditoria v15 com 17/17 checks, socket VFX fail-closed, persistência/hash e captura Godot Windows/OpenGL; o fluxo limpo de Cenário vazio passou com criação, salvamento e recarga nativos |
-| Diagnósticos Unity controlados | `PASS` do classificador; `BLOCKED_PARTIAL` para ambiente limpo | logs históricos positivos/negativos foram classificados em Docker; o r16 iniciou Unity real em Windows Sandbox com rede habilitada, validou o pacote corrigido (`Success=true`, código `0`), resolveu `Unity Personal`/`Unlimited` e preservou `Code 10`, token indisponível, warnings WMI e erro Curl; 29 entradas de processos compatíveis permaneceram no snapshot anterior ao shutdown da Sandbox, portanto o shutdown limpo completo continua não comprovado; o r11 e os timeouts r15 permanecem preservados como diagnósticos históricos |
+| Diagnósticos Unity controlados | `BLOCKED` | logs históricos positivos/negativos foram classificados em Docker; o r16 iniciou Unity real em Windows Sandbox com rede habilitada, validou o pacote corrigido (`Success=true`, código `0`), resolveu `Unity Personal`/`Unlimited` e preservou `Code 10`, token indisponível, warnings WMI e erro Curl; 29 entradas de processos compatíveis permaneceram no snapshot anterior ao shutdown da Sandbox, portanto o shutdown limpo completo continua não comprovado; o r11 e os timeouts r15 permanecem preservados como diagnósticos históricos |
 | CuPy | `PASS` da avaliação; `NOT_APPLICABLE` como dependência oficial | caminho opcional X-Ray comprovado no ambiente local, ganho somente no workload grande medido; não há evidência de que o gargalo do editor seja CuPy e a build portátil continua CPU/fallback |
 | Restauração de continuidade | `PASS_LOCAL_TRACKED_CHECKOUT` | bundle e checkout `3705fa8` restaurados; suíte `1959/2/1`; binário, symlink final e revisão humana permanecem fora deste subgate |
 
@@ -226,7 +230,7 @@ handoff/login manual, iniciou Unity e alcançou a compilação real, onde revelo
 `AnimationModule`; a correção declarativa foi aplicada no pacote e validada no
 r16. O r16, após handoff/login manual, produziu `package-report.json` com
 `Success=true`, Unity saiu com código `0` e o shutdown da Sandbox terminou
-naturalmente. Licensing e shutdown limpos do Editor permanecem parciais: `Code
+naturalmente. Licensing e shutdown limpos do Editor permanecem `BLOCKED`: `Code
 10`, token indisponível, warnings WMI/erro Curl e 29 entradas de processos
 compatíveis foram preservados. O r15 continua como timeout histórico causado pelo
 runner antigo. A evidência hashada de r1–r16 está em
@@ -272,11 +276,11 @@ atômico do atlas, o empacotamento `tzdata`, avaliou CuPy sem adoção oficial,
 qualificou a memória em soak controlado e registrou a limitação objetiva de GPU.
 O Unity r16 iniciou e chegou ao método corrigido do pacote, que produziu
 `Success=true`; o processo saiu do batchmode com código `0`. Licensing e shutdown
-limpos permanecem `BLOCKED_PARTIAL`: `Unity Personal`/`Unlimited` foi resolvido,
+limpos permanecem `BLOCKED`: `Unity Personal`/`Unlimited` foi resolvido,
 mas `Code 10`, token indisponível, warnings WMI/erro Curl e 29 entradas de
 processos compatíveis foram preservados. O r15 não substitui essa execução
 porque expirou sem iniciar Unity. O workload CUDA dedicado foi qualificado
-(`PASS_CONTROLLED_GPU_WORKLOAD`), mas o contador de frames/GPU do QGraphicsView
+(`PASS` no escopo CUDA controlado), mas o contador de frames/GPU do QGraphicsView
 permanece `NOT_APPLICABLE` por não ser exposto pelo caminho offscreen/software.
 O carregamento Unity e o shutdown da sandbox já foram comprovados. A revisão
 humana já foi aprovada; o gizmo e a produção de modelos/asset packs permanecem
@@ -295,9 +299,9 @@ comprovar shutdown limpo. Os timeouts r15 não são prova de execução do pacot
 
 Não reabrir bases anteriores, não refazer funcionalidades já corrigidas em outra base e
 não reutilizar capturas de SHA diferente. A validação de symlink deve ser reportada
-em duas linhas: `PASS_SANDBOX` quando os 31 casos passarem no Sandbox e
-`SKIP_LOCAL` quando o checkout não tiver privilégio; uma linha nunca substitui
-a outra. Por segurança, symlink e shutdown não devem ser executados nativamente
+em duas linhas: `PASS` no escopo controlado quando os 31 casos passarem no
+Sandbox e `NOT_APPLICABLE` no checkout, onde os testes ficam `skipped` pelo guard;
+uma linha nunca substitui a outra. Por segurança, symlink e shutdown não devem ser executados nativamente
 neste host; a execução controlada atual só deve ser repetida após mudança
 relevante conforme `EVD_POST_E13_SYMLINK_SANDBOX_DEFINITIVO_20260913.md`.
 

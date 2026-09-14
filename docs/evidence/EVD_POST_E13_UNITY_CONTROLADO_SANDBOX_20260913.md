@@ -1,7 +1,7 @@
 # Evidência pós-E13 — tentativa Unity em Windows Sandbox controlado
 
 **ID da feature:** `AUD-POST-E13-UNITY-CONTROLLED-SANDBOX-20260913`
-**Status:** `BLOCKED`
+**Status:** `IN_PROGRESS`
 **Data:** 2026-09-13
 **Requisito:** `REQ-POST-E13-UNITY-LICENSING-SHUTDOWN-20260913`
 **Decisão habilitadora:** `DECISAO-POST-E13-LIMITE-PERFORMANCE-SOAK-CONTROLADO-20260913`
@@ -63,11 +63,11 @@ foi sobrescrita.
 | r11 | `BLOCKED` | WSB com rede habilitada executou Unity, mas o runner herdado registrou `networking=disabled`; zero entitlements e código 198; falha de metadado preservada |
 | r12 | `BLOCKED` | WSB e runner registraram rede habilitada; candidato foi copiado com hash correspondente; Unity novamente encontrou zero entitlements e saiu com código 198 |
 | r13 | `BLOCKED` | candidato mudou após r12; wrapper isolado atualizou apenas o hash esperado em memória; cópia origem/destino coincidiu, mas Unity novamente encontrou zero entitlements e saiu com código 198 |
-| r14 | `FAIL_COMPILATION` | handoff manual concluído; Unity iniciou e alcançou a compilação, mas faltavam referências aos módulos `ImageConversion` e `Animation`; saiu com código 1 |
-| r15 | `TIMEOUT` | fixture corrigida preparada; Hub iniciou, mas nenhum gatilho de autenticação foi recebido em 1800 s; Unity não iniciou e a Sandbox encerrou de forma controlada |
-| r15 repetição de referência | `TIMEOUT` | a saída do follow-up observado às 19:29 foi preservada separadamente em `output-r15-repeat-20260913-1929/sandbox-result.json` (`C5CDE...`); continua sem Unity/licensing |
-| r15 repetição mais recente | `TIMEOUT` | a saída observada às 20:37 foi preservada em `output-r15-repeat-20260913-2037/sandbox-result.json` (`E7CD...`); o runner atingiu 1.800 s e pediu shutdown |
-| r16 | `PASS_PARTIAL` | confirmação manual recebida; Unity real `6000.5.7f1` executou dentro da Sandbox, o `package-report.json` retornou `Success=true` e o processo saiu `0`; `Code 10`, token indisponível, warnings WMI/erro Curl e evidência parcial de shutdown foram preservados |
+| r14 | `FAIL` | handoff manual concluído; Unity iniciou e alcançou a compilação, mas faltavam referências aos módulos `ImageConversion` e `Animation`; saiu com código 1 |
+| r15 | `BLOCKED` | fixture corrigida preparada; Hub iniciou, mas nenhum gatilho de autenticação foi recebido em 1800 s; Unity não iniciou e a Sandbox encerrou de forma controlada |
+| r15 repetição de referência | `BLOCKED` | a saída do follow-up observado às 19:29 foi preservada separadamente em `output-r15-repeat-20260913-1929/sandbox-result.json` (`C5CDE...`); continua sem Unity/licensing |
+| r15 repetição mais recente | `BLOCKED` | a saída observada às 20:37 foi preservada em `output-r15-repeat-20260913-2037/sandbox-result.json` (`E7CD...`); o runner atingiu 1.800 s e pediu shutdown |
+| r16 | `BLOCKED` | confirmação manual recebida; Unity real `6000.5.7f1` executou dentro da Sandbox, o `package-report.json` retornou `Success=true` e o processo saiu `0`; os gates de licensing/shutdown limpos permaneceram bloqueados e todos os sinais foram preservados |
 
 ## Execução real r8
 
@@ -366,7 +366,7 @@ Hashes da preparação: runner `8C4D22543EED175507370B71C974289F4D997D1CE30FF47B
 wrapper `B0C3A11DA6D9282307AA5A3C9EB7270CB73BBC98821AB9E1A113E5049FCF3EBD`,
 WSB `3ECF4A3FDF18A61C2A456EF505E6BF926718EE5FC33C7DC3E09F20D640A3F6E6`.
 
-## Execução real r16 — pacote corrigido e gates parciais
+## Execução real r16 — pacote corrigido e gates distintos
 
 O runner r16 permaneceu vivo por `2466` segundos sem timeout automático e só
 prosseguiu depois do gatilho manual
@@ -395,10 +395,10 @@ Resultado funcional objetivo:
   `Unity`, `UnityHub`, `UnityPackageManager` ou `UnityLicensingClient` no snapshot
   anterior ao shutdown da Sandbox. Como os nomes individuais não foram
   registrados, isso não prova que eram instâncias do Editor; por isso o shutdown
-  limpo do Unity permanece `BLOCKED_PARTIAL`;
+  limpo do Unity permanece `BLOCKED`;
 - `sandbox-shutdown-requested.txt` foi produzido somente dentro da VM e os
   processos da Sandbox terminaram no polling posterior. Esse gate é
-  `PASS_SANDBOX_ONLY`.
+  `PASS` no escopo exclusivo da Sandbox descartável.
 
 O resultado r16, a seleção do Editor, o relatório do pacote e a projeção
 sanitizada do log foram copiados para
@@ -419,10 +419,11 @@ mais recente está em
 campos de presença de diretórios/processos são preservados como diagnóstico do
 harness; não comprovam instalação concluída, autenticação, execução Unity ou
 shutdown limpo. Os timeouts r15 não substituem a execução r14 nem provam o
-comportamento do fixture corrigido. Após confirmação explícita do proprietário
-de que a instalação terminou, a próxima execução deverá ser o r16 novo, com a
-instalação apontada para `C:\UnityInstall` quando aplicável e sem reutilizar a
-VM r15.
+comportamento do fixture corrigido. Após a confirmação explícita do proprietário,
+o r16 já foi executado e consumiu essa condição. Não há nova execução automática
+neste registro. Uma nova execução, se formalmente necessária, deverá ser um
+ciclo descartável novo, com a instalação apontada para `C:\UnityInstall` quando
+aplicável e sem reutilizar a VM r15.
 
 ## Evidências e hashes
 
@@ -606,16 +607,16 @@ autoriza qualquer execução nativa no host.
 | Gate | Estado | Evidência |
 |---|---|---|
 | carregamento/execução real do Unity | `PASS` | r16 iniciou o Unity x64 em Sandbox com rede habilitada, alcançou o método do pacote e saiu com código `0`; r15 permanece como timeout histórico |
-| licensing limpo | `BLOCKED / PARTIAL_DIAGNOSTIC` | r16 resolveu `Unity Personal`/`Unlimited`, mas preservou `Code 10` e token indisponível; não há prova de licensing limpo |
+| licensing limpo | `BLOCKED` | r16 resolveu `Unity Personal`/`Unlimited`, mas preservou `Code 10` e token indisponível; não há prova de licensing limpo |
 | método/relatório do pacote | `PASS` | r16 produziu `package-report.json` com `Success=true`, pacote `com.neoeng.dtrace` `0.3.0` e sete checks aprovados |
-| shutdown limpo do Unity/`-quit` | `BLOCKED_PARTIAL` | r16 observou quit de batchmode, retorno `0` e saída de batchmode, mas não o sinal exato `Shut down.`; havia 29 entradas de processos compatíveis no snapshot anterior à Sandbox terminar |
+| shutdown limpo do Unity/`-quit` | `BLOCKED` | r16 observou quit de batchmode, retorno `0` e saída de batchmode, mas não o sinal exato `Shut down.`; havia 29 entradas de processos compatíveis no snapshot anterior à Sandbox terminar |
 | shutdown da sandbox descartável | `PASS` | r16 produziu marcador interno e a VM terminou no polling posterior; o shutdown foi somente da Sandbox descartável |
 | segurança do host | `PASS` | não houve Unity, shutdown ou terminação forçada no host |
 
 O estado atual combina gates distintos e não deve ser reduzido a um único
 diagnóstico: r13 manteve o bloqueio de entitlement, r14 revelou uma falha
 concreta de compilação do contrato do pacote e r16 comprovou a correção no método
-do pacote. O `BLOCKED_PARTIAL` de licensing/shutdown, o timeout r15, os warnings
+do pacote. O bloqueio de licensing/shutdown, o timeout r15, os warnings
 WMI, o erro Curl e o snapshot de processos continuam explícitos; nenhum
 diagnóstico histórico positivo foi reutilizado como prova de shutdown limpo.
 
@@ -662,7 +663,7 @@ descartável; não reutilizar o resultado do timeout r15. Não repetir r9/r10/r1
 sem mudança relevante, nem symlink ou shutdown do host; o r11 não precisa ser
 repetido porque seu metadado inválido já foi corrigido e preservado.
 
-Até essa condição, o gate Unity permanece `BLOCKED_PARTIAL` e a meta pós-E13
+Até essa condição, o gate Unity permanece `BLOCKED` e a meta pós-E13
 continua `IN_PROGRESS`; o carregamento, o método do pacote e o shutdown da Sandbox
 estão comprovados, mas licensing limpo e shutdown limpo completo do Unity não
 estão.
