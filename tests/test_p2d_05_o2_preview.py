@@ -490,11 +490,12 @@ def test_viewport_transform_change_reuses_structure_snapshot(
         assert view._items["a"].pos().y() == pytest.approx(1.0)
         session.cancel_gesture()
         repaint_calls.clear()
-        assert session.set_camera(
-            SceneCameraAuthoringRecord(
-                position=PointRecord(x=8.0, y=4.0), zoom=1.5
+        assert (
+            session.set_camera(
+                SceneCameraAuthoringRecord(position=PointRecord(x=8.0, y=4.0), zoom=1.5)
             )
-        ) is True
+            is True
+        )
         assert repaint_calls == [True]
     finally:
         session.cancel_gesture()

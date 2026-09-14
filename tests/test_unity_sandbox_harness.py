@@ -4,12 +4,9 @@ import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS_ROOT = (
-    ROOT
-    / "artifacts"
-    / "audit-post-e13-unity-controlled-windows-sandbox-20260913-r1"
+    ROOT / "artifacts" / "audit-post-e13-unity-controlled-windows-sandbox-20260913-r1"
 )
 R15_RUNNER = HARNESS_ROOT / "control-r15" / "run.ps1"
 R16_RUNNER = HARNESS_ROOT / "control-r16" / "run.ps1"
@@ -76,8 +73,7 @@ def test_r16_keeps_product_fixture_and_known_editor_read_only():
     )
 
 
-def test_r16_corrected_package_method_evidence_without_overclaiming_shutdown(
-):
+def test_r16_corrected_package_method_evidence_without_overclaiming_shutdown():
     result = json.loads((R16_REAL_OUTPUT / "sandbox-result.json").read_text())
     package = json.loads((R16_REAL_OUTPUT / "package-report.json").read_text())
 

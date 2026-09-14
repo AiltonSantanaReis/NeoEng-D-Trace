@@ -330,12 +330,16 @@ class VectorContourPanel(QWidget):
             return False
         self.status_message.emit(
             self._status(
-                f"Objeto vetorial de cena criado: {object_id}"
-                if changed
-                else "Nenhum objeto criado",
-                f"Vector scene object created: {object_id}"
-                if changed
-                else "No object created",
+                (
+                    f"Objeto vetorial de cena criado: {object_id}"
+                    if changed
+                    else "Nenhum objeto criado"
+                ),
+                (
+                    f"Vector scene object created: {object_id}"
+                    if changed
+                    else "No object created"
+                ),
             )
         )
         self._refresh()

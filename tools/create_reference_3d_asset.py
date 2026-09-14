@@ -23,7 +23,6 @@ from typing import Iterable, Sequence
 
 from PIL import Image
 
-
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE_RECORDS = [
     {
@@ -1250,10 +1249,7 @@ def generate(output: Path) -> dict:
     output.mkdir(parents=True)
     parts = build_parts()
     images, texture_files = _write_texture_set(output)
-    texture_payloads = [
-        (output / record["uri"]).read_bytes()
-        for record in images
-    ]
+    texture_payloads = [(output / record["uri"]).read_bytes() for record in images]
     geometry, mesh_records, part_records, builder = _encode_geometry(parts)
     gltf, binary = _build_gltf(
         parts, geometry, mesh_records, builder, images, texture_files
@@ -1300,9 +1296,7 @@ def generate(output: Path) -> dict:
                 "metallic_roughness": texture_files[kind]["orm"],
                 "normal": texture_files[kind]["normal"],
                 "emissive": (
-                    texture_files[kind]["basecolor"]
-                    if name == "Energy_Rune"
-                    else None
+                    texture_files[kind]["basecolor"] if name == "Energy_Rune" else None
                 ),
             }
             for name, kind in (

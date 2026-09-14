@@ -14,7 +14,6 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-
 COMPONENTS = {
     5121: ("B", 1),
     5123: ("H", 2),

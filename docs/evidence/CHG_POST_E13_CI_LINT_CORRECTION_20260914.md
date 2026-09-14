@@ -27,10 +27,20 @@ para o import `os` não utilizado em `tools/create_reference_3d_asset.py`.
 Não houve erro funcional, de compilação, de dependência ou de baseline nesse
 run.
 
+Na execução seguinte `34884085236`, o `flake8` passou nos dois ambientes, mas
+o passo oficial `Check formatting` também foi reprovado nos jobs Linux
+`104110264166` e Windows `104110264428`. O diff do Black identificou seis
+arquivos que ainda precisavam da formatação canônica: o painel vetorial, os
+testes de symlink, o teste de viewport, o teste do harness Unity e os dois
+geradores/validadores de asset 3D.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
   limite configurado de 88 colunas.
+- Aplicação do diff indicado pelo `black --check --diff`, incluindo somente
+  agrupamento de expressões, normalização de linhas em testes controlados e
+  espaços em branco.
 - Remoção somente do import `os` comprovadamente não utilizado.
 - Renomeação de um identificador de teste excessivamente longo, sem mudar o
   cenário, as asserções ou o contrato verificado.
@@ -50,11 +60,11 @@ tools/baseline_integrity.py --verify --git-blob
 Baseline verified: 3901 files
 ```
 
-PENDENTE DE EVIDÊNCIA: a execução local do comando `poetry run flake8` e dos
-testes pytest não está disponível neste checkout porque `poetry` e `pytest`
-não estão instalados. O novo CI deverá executar o comando oficial nos dois
-ambientes e será a prova final desta mudança; ausência local não será tratada
-como sucesso.
+PENDENTE DE EVIDÊNCIA: a execução local de `poetry run flake8`,
+`poetry run black --check` e dos testes pytest não está disponível neste
+checkout porque `poetry`, Black e pytest não estão instalados. O novo CI deverá
+executar os comandos oficiais nos dois ambientes e será a prova final desta
+mudança; ausência local não será tratada como sucesso.
 
 ## Impacto e não regressão
 
