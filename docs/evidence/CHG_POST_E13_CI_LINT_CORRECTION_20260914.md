@@ -34,6 +34,13 @@ arquivos que ainda precisavam da formatação canônica: o painel vetorial, os
 testes de symlink, o teste de viewport, o teste do harness Unity e os dois
 geradores/validadores de asset 3D.
 
+Na execução `34885099513`, lint, Black e isort passaram nos dois ambientes,
+mas `mypy src` falhou nos jobs Linux `104113680758` e Windows `104113680941`
+com sete diagnósticos em `src/core/unity_integration.py` e
+`src/ui/unity_integration_settings.py`. Os diagnósticos eram de inferência de
+tipo no reuso de uma variável `str | None` como `Path` e de passagem de um
+`str` genérico onde a API exige `ExecutableKind` (`"hub"` ou `"editor"`).
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
@@ -41,6 +48,9 @@ geradores/validadores de asset 3D.
 - Aplicação do diff indicado pelo `black --check --diff`, incluindo somente
   agrupamento de expressões, normalização de linhas em testes controlados e
   espaços em branco.
+- Separação explícita entre o valor textual de ambiente e a raiz `Path` do
+  editor, além da tipagem dos métodos UI com o alias `ExecutableKind`; o fluxo
+  de descoberta e seleção permanece o mesmo.
 - Remoção somente do import `os` comprovadamente não utilizado.
 - Renomeação de um identificador de teste excessivamente longo, sem mudar o
   cenário, as asserções ou o contrato verificado.
@@ -61,7 +71,8 @@ Baseline verified: 3901 files
 ```
 
 PENDENTE DE EVIDÊNCIA: a execução local de `poetry run flake8`,
-`poetry run black --check` e dos testes pytest não está disponível neste
+`poetry run black --check`, `poetry run isort --check-only`, `poetry run mypy`
+e dos testes pytest não está disponível neste
 checkout porque `poetry`, Black e pytest não estão instalados. O novo CI deverá
 executar os comandos oficiais nos dois ambientes e será a prova final desta
 mudança; ausência local não será tratada como sucesso.

@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.unity_integration import (
+    ExecutableKind,
     UNITY_HUB_DOCS_URL,
     UNITY_ID_URL,
     UnityIntegrationSnapshot,
@@ -291,7 +292,7 @@ class UnityIntegrationDialog(QDialog):
             return t["unity_invalid"].format(path=path)
         return t["unity_not_configured"]
 
-    def _select_executable(self, kind: str) -> None:
+    def _select_executable(self, kind: ExecutableKind) -> None:
         t = self._translations
         title = t["unity_select_hub"] if kind == "hub" else t["unity_select_editor"]
         current = self.hub_path.text() if kind == "hub" else self.editor_path.text()
@@ -322,7 +323,9 @@ class UnityIntegrationDialog(QDialog):
             return
         (self.hub_path if kind == "hub" else self.editor_path).setText(str(path))
 
-    def _validated_config_path(self, widget: QLineEdit, kind: str) -> str | None:
+    def _validated_config_path(
+        self, widget: QLineEdit, kind: ExecutableKind
+    ) -> str | None:
         path = normalize_external_path(widget.text() or None)
         if path is None:
             return None

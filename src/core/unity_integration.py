@@ -103,19 +103,21 @@ def discover_unity_editor_executables(
     values = os.environ if environment is None else environment
     roots: list[Path] = []
     for name in ("PROGRAMFILES", "ProgramW6432", "PROGRAMFILES(X86)"):
-        root = values.get(name)
-        if root:
-            roots.append(Path(root) / "Unity" / "Hub" / "Editor")
+        root_value = values.get(name)
+        if root_value:
+            roots.append(Path(root_value) / "Unity" / "Hub" / "Editor")
     local_app_data = _environment_value(values, "LOCALAPPDATA", "LocalAppData")
     if local_app_data:
         roots.append(Path(local_app_data) / "UnityHub" / "Editor")
 
     candidates: list[Path] = []
-    for root in _deduplicate(roots):
-        if not root.is_dir():
+    for editor_root in _deduplicate(roots):
+        if not editor_root.is_dir():
             continue
         try:
-            versions = sorted(root.iterdir(), key=lambda item: item.name, reverse=True)
+            versions = sorted(
+                editor_root.iterdir(), key=lambda item: item.name, reverse=True
+            )
         except OSError:
             continue
         for version in versions:

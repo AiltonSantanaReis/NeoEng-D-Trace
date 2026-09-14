@@ -2265,8 +2265,8 @@
       "size": 2813
     },
     "docs/evidence/CHG_POST_E13_CI_LINT_CORRECTION_20260914.md": {
-      "sha256": "bbd463bbcac7e9f494977e54d46a00091fcb0fb754f79cb660c54ac2b2a22d5e",
-      "size": 3754
+      "sha256": "f1304b987a8bf56b5e3378f4ab3b2a975a8b9571c3fc9195afd3352e53cc9b53",
+      "size": 4459
     },
     "docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md": {
       "sha256": "2d6463f80dfdf923365b79c7b4f2d59e2aad388cf25f36da36e2974025903441",
@@ -13881,8 +13881,8 @@
       "size": 10362
     },
     "src/core/unity_integration.py": {
-      "sha256": "7a4efd3f93bc89742c0654fe5464b2d989ea1efdfe2b03154f187f777f59e5aa",
-      "size": 6579
+      "sha256": "e3c7fbdd0df4a63f777d9a47a502e49062a6cb28e0e6735f60069f1f5cc30695",
+      "size": 6648
     },
     "src/core/validation_events.py": {
       "sha256": "3e7b6baedbdaae4b3ae940b9dee0b220456e88c3610ccc255a3a05f2dcb2434b",
@@ -14413,8 +14413,8 @@
       "size": 6338
     },
     "src/ui/unity_integration_settings.py": {
-      "sha256": "74f998c21c0e07ea658f791878b8949a01376efed20bb08335a60cc9402bc543",
-      "size": 17421
+      "sha256": "aa76996f33760ae88b9187c3217783a4420df90ad593b2ebe9f29e75be69242b",
+      "size": 17477
     },
     "src/ui/vector_contour_panel.py": {
       "sha256": "3bf6158071e8da977cb353dadb2a91023b2bcb720793d2ce0ef008656a819102",
