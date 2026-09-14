@@ -174,8 +174,8 @@ incorporar.
 | `evidence/PACK_01_03_PILOTO_FLORESTA_20260910.md` | ATIVO / EVIDÊNCIA PENDENTE | rastreabilidade do primeiro incremento do piloto Floresta e catálogo | proposta de pacotes e decisão P2D-01 |
 | `evidence/ADR_POST_E13_UNITY_INTEGRATION_FLOW_20260914.md` | ATIVO / ADR `PASS` | fronteira de responsabilidade entre NeoEng-D-Trace, Unity Hub e licenciamento externo; configuração segura de pré-requisitos | governança, continuidade pós-E13 e documentação oficial do Unity; commit `b9e3055` |
 | `evidence/EVD_POST_E13_UNITY_INTEGRATION_PREFLIGHT_20260914.md` | ATIVO / EVIDÊNCIA `PASS` | comprovação do diagnóstico, fluxo UI, persistência e segurança da integração Unity | ADR `ADR-POST-E13-UNITY-INTEGRATION-FLOW`, governança, build r2 e capturas nativas; commit `b9e3055` |
-| `evidence/CHG_POST_E13_BASELINE_RECONCILIACAO_20260914.md` | ATIVO / REGISTRO DE MUDANÇA `IN_PROGRESS` | reconciliação do manifesto de baseline após falha remota no passo de integridade | governança, baseline, PR #174, `REQ-F12-QUALITY-GATES` e `FEAT-QA-EVIDENCE-PACKAGE` |
-| `evidence/CHG_POST_E13_CI_LINT_CORRECTION_20260914.md` | ATIVO / REGISTRO DE MUDANÇA `IN_PROGRESS` | correção de violações E501/F401 encontradas no lint oficial do PR #174 | governança, baseline, PR #174, `REQ-F12-QUALITY-GATES` e pacote de consolidação |
+| `evidence/CHG_POST_E13_BASELINE_RECONCILIACAO_20260914.md` | ATIVO / REGISTRO DE MUDANÇA `PASS` | reconciliação integral dos 3.902 arquivos, confirmada no CI Linux/Windows 34906198223 | governança, baseline, PR #174, `REQ-F12-QUALITY-GATES` e `FEAT-QA-EVIDENCE-PACKAGE` |
+| `evidence/CHG_POST_E13_CI_LINT_CORRECTION_20260914.md` | ATIVO / REGISTRO DE MUDANÇA `PASS` | correções estáticas, funcionais e documentais; CI completo, cobertura e gate formal de legado aprovados; falhas e limites preservados | governança, baseline, PR #174, `REQ-F12-QUALITY-GATES` e pacote de consolidação |
 
 ## 3. Documentos superseded
 

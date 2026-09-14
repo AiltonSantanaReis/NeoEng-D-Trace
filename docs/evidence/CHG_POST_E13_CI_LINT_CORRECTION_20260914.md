@@ -1,9 +1,9 @@
-# Registro de mudança — correção do lint do pacote de consolidação
+# Registro de mudança — correções e validação do pacote de consolidação
 
 **ID:** `CHG-POST-E13-CI-LINT-CORRECTION-20260914`
-**Status:** `IN_PROGRESS`
+**Status:** `PASS` — correções comprovadas no CI `34906198223`
 **Data:** 2026-09-14
-**Escopo:** correção de qualidade estática identificada pelo CI do PR #174
+**Escopo:** correções estáticas, funcionais e documentais identificadas pelo CI do PR #174
 **Requisitos afetados:** `REQ-F12-QUALITY-GATES`
 **Feature/componente:** `FEAT-QA-EVIDENCE-PACKAGE`, módulos de UI e ferramentas de evidência 3D
 **Testes afetados:** `TEST-QA-EVIDENCE-COMMIT`, `TEST-QA-EVIDENCE-MANIFEST`
@@ -198,6 +198,62 @@ de cobertura; restaura a bota esquerda já prevista, elimina a corrida de
 observadores no timeout e aumenta a eficácia dos testes de descoberta. O
 baseline será regenerado a partir do conteúdo staged e verificado contra blobs
 Git para incluir os hashes dos arquivos corrigidos.
+
+## Encerramento comprovado desta mudança
+
+A execução oficial [34906198223](https://github.com/AiltonSantanaReis/NeoEng-D-Trace/actions/runs/34906198223)
+terminou com `success` nos jobs Linux `104183307652` e Windows `104183307361`.
+Fonte do PR: `ec4ecebcdfbeb826b0ed0de213d3f2c8140f12d9`.
+Commit de integração testado pelo runner:
+`f5d8be6085457f1ef71dc8f0e0797333928a9b73`.
+
+| Controle | Linux | Windows |
+| --- | --- | --- |
+| Suíte oficial | 2.654 passed, 2 skipped | 247/247 arquivos; 2.656 testes; 0 falhas, 0 erros, 2 skipped |
+| Linhas cobertas | 34.969/37.502 = 93,25% | 34.969/37.502 = 93,25% |
+| Branches cobertos | 9.419/11.076 = 85,04% | 9.417/11.076 = 85,02% |
+| Política integrada 90%/85%, módulos mensuráveis 30% | PASS | PASS |
+| Baseline inicial/final e integridade das evidências | PASS; 3.902 arquivos | PASS; 3.902 arquivos |
+| Lint, Black, isort, mypy, auditoria de dependências e Bandit | PASS | PASS |
+| Auditoria Stage 4B.5 | PASS | PASS |
+
+O gate formal de legado no Windows também retornou `accepted=true`, sem erros
+de avaliação, e executou os 42 contratos substitutos: `42 passed`, zero skips.
+O runner histórico bruto mantém suas 26 falhas em 196 testes, sob as decisões
+de reconciliação já aprovadas: 15 assinaturas históricas exatas e 12 observações
+atuais revisadas, totalizando 27 casos reconciliados. Esse resultado histórico
+não foi apagado, convertido em zero falhas ou alterado para aprovar o PR.
+
+Artefatos oficiais baixados em
+`artifacts/post-e13-consolidation-ci-20260914-r1/`, com subpastas `linux` e
+`windows`. A cópia inclui cobertura, ambiente, logs/JUnit Windows e o relatório
+`_temp/legacy-tests/formal-gate.json`.
+
+| Artefato oficial | ID | Digest SHA-256 publicado pelo serviço |
+| --- | --- | --- |
+| validation-linux-python-3.11 | 10372821812 | `bdf1357541711bc7ce847a0347da29a6ea080aab49d799d9bec3522bf008add2` |
+| validation-windows-python-3.11 | 10373161778 | `6a3932cb6e293a36875c5352000993d654aff8c3caa53ad9bba5ff274113b64a` |
+
+SHA-256 dos XMLs de cobertura conferidos localmente:
+
+- Linux: `4DDCECCEE3C52C7A4FFC166C57F10B415E30BCE48EC99434A4FE0B49245BCC82`.
+- Windows: `9F75A9A2FD93EF6B88A34CDCA1C9EA92C1A8A0E26B47673FC5CC493D08CCEEDA`.
+
+Os dois skips da suíte comum continuam sendo as barreiras dos testes de
+symlink. A comparação somente de leitura entre a fonte controlada `6a759f4`
+e `ec4eceb` confirmou AST idêntica em `tests/test_integration_sync.py` e blob
+idêntico em `src/exporters/integration_sync.py`. A evidência controlada r4
+(`31 passed`, zero skips) permanece vinculada no registro próprio, sem nova
+execução no host. O passo `Collect Windows native crash diagnostics` foi
+condicionalmente pulado porque o passo de testes passou; isso não é um teste
+funcional omitido nem ausência de diagnóstico após falha.
+
+O `PASS` encerra estas correções, não todas as pendências do produto:
+licensing/shutdown, prontidão artística/importação do personagem no Unity e o
+limite estrutural aceito mantêm seus registros e estados anteriores. Builds e
+capturas históricas continuam vinculadas aos seus próprios commits/hashes.
+O commit documental de encerramento deverá passar novamente pela CI antes do
+merge; esta prova se refere expressamente à fonte `ec4eceb`.
 
 ## Dependências documentais
 
