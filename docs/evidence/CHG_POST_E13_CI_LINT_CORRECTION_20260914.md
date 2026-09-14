@@ -41,6 +41,12 @@ com sete diagnósticos em `src/core/unity_integration.py` e
 tipo no reuso de uma variável `str | None` como `Path` e de passagem de um
 `str` genérico onde a API exige `ExecutableKind` (`"hub"` ou `"editor"`).
 
+Na execução `34886148389`, lint e Black passaram nos dois ambientes e mypy não
+foi alcançado por causa da falha anterior de isort. O único diagnóstico de
+isort foi a ordem dos nomes na importação de `src/ui/unity_integration_settings.py`:
+as constantes `UNITY_*` devem preceder `ExecutableKind` conforme o perfil
+canônico do projeto.
+
 ## Correção aplicada
 
 - Quebra mecânica de expressões, chamadas, literais e mensagens longas para o
@@ -51,6 +57,8 @@ tipo no reuso de uma variável `str | None` como `Path` e de passagem de um
 - Separação explícita entre o valor textual de ambiente e a raiz `Path` do
   editor, além da tipagem dos métodos UI com o alias `ExecutableKind`; o fluxo
   de descoberta e seleção permanece o mesmo.
+- Reordenação da importação Unity conforme o diff oficial do isort; nenhum
+  símbolo foi adicionado ou removido.
 - Remoção somente do import `os` comprovadamente não utilizado.
 - Renomeação de um identificador de teste excessivamente longo, sem mudar o
   cenário, as asserções ou o contrato verificado.

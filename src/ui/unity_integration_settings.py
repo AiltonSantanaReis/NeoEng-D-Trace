@@ -22,9 +22,9 @@ from PySide6.QtWidgets import (
 )
 
 from src.core.unity_integration import (
-    ExecutableKind,
     UNITY_HUB_DOCS_URL,
     UNITY_ID_URL,
+    ExecutableKind,
     UnityIntegrationSnapshot,
     build_unity_integration_snapshot,
     is_expected_executable,

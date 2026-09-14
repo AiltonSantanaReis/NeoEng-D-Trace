@@ -2265,8 +2265,8 @@
       "size": 2813
     },
     "docs/evidence/CHG_POST_E13_CI_LINT_CORRECTION_20260914.md": {
-      "sha256": "f1304b987a8bf56b5e3378f4ab3b2a975a8b9571c3fc9195afd3352e53cc9b53",
-      "size": 4459
+      "sha256": "6f2680bbc63a024bea2af774a7fcac47923c3e8fbf756ab9c08b8dbef7fb26b7",
+      "size": 4921
     },
     "docs/evidence/CHG_POST_E13_CONTINUIDADE_RECONCILIACAO_20260913.md": {
       "sha256": "2d6463f80dfdf923365b79c7b4f2d59e2aad388cf25f36da36e2974025903441",
@@ -14413,7 +14413,7 @@
       "size": 6338
     },
     "src/ui/unity_integration_settings.py": {
-      "sha256": "aa76996f33760ae88b9187c3217783a4420df90ad593b2ebe9f29e75be69242b",
+      "sha256": "948b9e6180e3994b1000158aa8234911514310bd53d1dd65655130103c3dc246",
       "size": 17477
     },
     "src/ui/vector_contour_panel.py": {
