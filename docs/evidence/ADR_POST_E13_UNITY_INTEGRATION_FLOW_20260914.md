@@ -2,7 +2,8 @@
 
 **ID:** `ADR-POST-E13-UNITY-INTEGRATION-FLOW`
 **Data:** 2026-09-14
-**Status:** `PENDING_EVIDENCE`
+**Status:** `PASS`
+**Commit auditado:** `b9e305551dc41098fb032ca719755a2fb0eb6978`
 **Escopo:** pós-E13, integração local do NeoEng-D-Trace com Unity Hub/Editor
 **Requisitos/features:** `REQ-F14-UNITY-INTEGRATION-PREFLIGHT`,
 `FEAT-UNITY-HUB-PREFLIGHT`
@@ -92,7 +93,8 @@ Testes focados e suíte oficial, smoke da build e hashes das capturas estão
 registrados em
 `EVD_POST_E13_UNITY_INTEGRATION_PREFLIGHT_20260914.md`.
 
-O estado permanece `PENDING_EVIDENCE` até o commit auditado ser vinculado.
+O commit auditado `b9e305551dc41098fb032ca719755a2fb0eb6978` vincula a decisão
+à implementação, aos testes e à evidência nativa.
 
 ## Plano de reversão
 

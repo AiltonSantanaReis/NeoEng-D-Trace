@@ -172,8 +172,8 @@ registrado nesta revisão; o commit de inclusão é o commit documental que o
 incorporar.
 | `evidence/PROPOSTA_PACOTES_ASSETS_PROPRIOS_20260910.md` | ATIVO / ESPECIFICAÇÃO EM IMPLEMENTAÇÃO | direção, limites e sequência dos pacotes de assets pós-E13 | governança, base pós-E13 e decisão P2D-01 |
 | `evidence/PACK_01_03_PILOTO_FLORESTA_20260910.md` | ATIVO / EVIDÊNCIA PENDENTE | rastreabilidade do primeiro incremento do piloto Floresta e catálogo | proposta de pacotes e decisão P2D-01 |
-| `evidence/ADR_POST_E13_UNITY_INTEGRATION_FLOW_20260914.md` | ATIVO / ADR `PENDING_EVIDENCE` | fronteira de responsabilidade entre NeoEng-D-Trace, Unity Hub e licenciamento externo; configuração segura de pré-requisitos | governança, continuidade pós-E13 e documentação oficial do Unity |
-| `evidence/EVD_POST_E13_UNITY_INTEGRATION_PREFLIGHT_20260914.md` | ATIVO / EVIDÊNCIA `PENDING_EVIDENCE` | comprovação do diagnóstico, fluxo UI, persistência e segurança da integração Unity | ADR `ADR-POST-E13-UNITY-INTEGRATION-FLOW`, governança e registro canônico de IDs |
+| `evidence/ADR_POST_E13_UNITY_INTEGRATION_FLOW_20260914.md` | ATIVO / ADR `PASS` | fronteira de responsabilidade entre NeoEng-D-Trace, Unity Hub e licenciamento externo; configuração segura de pré-requisitos | governança, continuidade pós-E13 e documentação oficial do Unity; commit `b9e3055` |
+| `evidence/EVD_POST_E13_UNITY_INTEGRATION_PREFLIGHT_20260914.md` | ATIVO / EVIDÊNCIA `PASS` | comprovação do diagnóstico, fluxo UI, persistência e segurança da integração Unity | ADR `ADR-POST-E13-UNITY-INTEGRATION-FLOW`, governança, build r2 e capturas nativas; commit `b9e3055` |
 
 ## 3. Documentos superseded
 
