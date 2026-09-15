@@ -46,7 +46,12 @@ def _base(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
         tmp_path / SEALED_LOCK_VALUES["index_path"],
         (ROOT / SEALED_LOCK_VALUES["index_path"]).read_bytes(),
     )
+    amendment = _write(
+        tmp_path / SEALED_LOCK_VALUES["amendment_path"],
+        (ROOT / SEALED_LOCK_VALUES["amendment_path"]).read_bytes(),
+    )
     assert _index.is_file()
+    assert amendment.is_file()
     lock = {
         "schema_version": 1,
         **SEALED_LOCK_VALUES,
@@ -86,6 +91,10 @@ def _ack(tmp_path: Path, lock_path: Path) -> Path:
                     {
                         "path": SEALED_LOCK_VALUES["strict_addendum_path"],
                         "sha256": lock["strict_addendum_sha256"],
+                    },
+                    {
+                        "path": SEALED_LOCK_VALUES["amendment_path"],
+                        "sha256": lock["amendment_sha256"],
                     },
                     {
                         "path": SEALED_LOCK_VALUES["index_path"],

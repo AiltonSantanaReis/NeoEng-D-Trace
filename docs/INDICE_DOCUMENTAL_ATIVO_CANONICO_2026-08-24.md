@@ -39,6 +39,7 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 |---|---|---|---|
 | `GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md` | ATIVO / PREVALENTE | integridade, testes reais, no-bypass, sequência e baseline | decisões aprovadas |
 | `ADENDO_GOVERNANCA_REALIDADE_EVIDENCIAS_2026-09-15.md` | ATIVO / ADENDO NORMATIVO DE ENDURECIMENTO | leitura integral por etapa, plano imutável, evidência real e gate fail-closed | governança superior e decisão formal do proprietário |
+| `ADENDO_01_PORTABILIDADE_HASH_EOF_2026-09-15.md` | ATIVO / ADENDO NORMATIVO DE CORREÇÃO | EOL canônico, portabilidade de hashes e requalificação obrigatória Linux/Windows | plano imutável, adendo de realidade e falha real do PR #175 |
 | `PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md` | ATIVO | arquitetura, renderer, 2.5D, 3D e encerramento | governança |
 | `PLANO_IMUTAVEL_PRODUTO_REAL_2026-09-15.md` | ATIVO / PLANO IMUTÁVEL | plano aceito de produto real, fases, critérios e não regressão | governança superior e adendo de realidade |
 | `IMMUTABLE_PLAN_LOCK_2026-09-15.json` | ATIVO / LOCK CRIPTOGRÁFICO | hash do plano e da governança; bloqueio de adulteração | plano imutável e gate obrigatório |

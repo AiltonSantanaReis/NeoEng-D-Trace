@@ -19,14 +19,15 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LOCK = ROOT / "docs" / "IMMUTABLE_PLAN_LOCK_2026-09-15.json"
 SEALED_LOCK_VALUES = {
-    "lock_id": "LOCK-PLAN-REAL-20260915",
+    "lock_id": "LOCK-PLAN-REAL-20260915-R1",
+    "seal_revision": 2,
     "plan_path": "docs/PLANO_IMUTAVEL_PRODUTO_REAL_2026-09-15.md",
     "plan_sha256": ("215fb4552fa34924a05357a1558f94d4ed55788cc3c08acd8114883f2adde4fa"),
     "governance_path": (
         "docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md"
     ),
     "governance_sha256": (
-        "d933db005b7110c391cf776cda3014ce348d61a91a5e9902aeea619185ec3ea0"
+        "4630b27f12a0966cccc20d4413da514c6eb310da9a48cf37e1fc07559e1a02b1"
     ),
     "strict_addendum_path": (
         "docs/ADENDO_GOVERNANCA_REALIDADE_EVIDENCIAS_2026-09-15.md"
@@ -36,7 +37,12 @@ SEALED_LOCK_VALUES = {
     ),
     "index_path": "docs/INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md",
     "index_sha256": (
-        "26797da54d99b6002f84c26ca195cdec0a469ed93200d7636878c26cfc977e6d"
+        "957f18529243a733fd36a94b159cc5ca0144b7ad09ca579655074776091f09fd"
+    ),
+    "canonical_text_eol": "LF",
+    "amendment_path": "docs/ADENDO_01_PORTABILIDADE_HASH_EOF_2026-09-15.md",
+    "amendment_sha256": (
+        "70f96e54243ad2a0cc11d163042fc9f6ebec50bc36e1098066d6e98958bf2636"
     ),
 }
 
@@ -124,6 +130,8 @@ def validate_plan_lock(
         raise StrictGateError("release gate is not fail-closed")
     if _require(lock, "stage_ack_required", "lock") is not True:
         raise StrictGateError("stage acknowledgement is not required")
+    if _require(lock, "canonical_text_eol", "lock") != "LF":
+        raise StrictGateError("canonical text EOL is not LF")
     for key, expected in SEALED_LOCK_VALUES.items():
         if lock.get(key) != expected:
             raise StrictGateError(f"sealed lock value mismatch: {key}")
@@ -138,10 +146,14 @@ def validate_plan_lock(
         "strict_addendum_path",
     )
     index = _safe_path(root, _require(lock, "index_path", "lock"), "index_path")
+    amendment = _safe_path(
+        root, _require(lock, "amendment_path", "lock"), "amendment_path"
+    )
     expected_plan = _require(lock, "plan_sha256", "lock")
     expected_governance = _require(lock, "governance_sha256", "lock")
     expected_addendum = _require(lock, "strict_addendum_sha256", "lock")
     expected_index = _require(lock, "index_sha256", "lock")
+    expected_amendment = _require(lock, "amendment_sha256", "lock")
     if not re.fullmatch(r"[0-9a-f]{64}", str(expected_plan)):
         raise StrictGateError("plan_sha256 is not sealed")
     if not re.fullmatch(r"[0-9a-f]{64}", str(expected_governance)):
@@ -150,6 +162,8 @@ def validate_plan_lock(
         raise StrictGateError("strict_addendum_sha256 is not sealed")
     if not re.fullmatch(r"[0-9a-f]{64}", str(expected_index)):
         raise StrictGateError("index_sha256 is not sealed")
+    if not re.fullmatch(r"[0-9a-f]{64}", str(expected_amendment)):
+        raise StrictGateError("amendment_sha256 is not sealed")
     if _sha256(plan) != expected_plan:
         raise StrictGateError("immutable plan hash mismatch")
     if _sha256(governance) != expected_governance:
@@ -158,8 +172,12 @@ def validate_plan_lock(
         raise StrictGateError("strict addendum hash mismatch")
     if _sha256(index) != expected_index:
         raise StrictGateError("active index hash mismatch")
+    if _sha256(amendment) != expected_amendment:
+        raise StrictGateError("amendment hash mismatch")
     if not strict_addendum.is_file():
         raise StrictGateError("strict governance addendum is missing")
+    if not amendment.is_file():
+        raise StrictGateError("numbered governance amendment is missing")
 
     plan_text = plan.read_text(encoding="utf-8")
     required_plan_markers = (
@@ -223,6 +241,7 @@ def validate_stage_ack(
         lock["governance_path"]: lock["governance_sha256"],
         lock["strict_addendum_path"]: lock["strict_addendum_sha256"],
         lock["index_path"]: lock["index_sha256"],
+        lock["amendment_path"]: lock["amendment_sha256"],
     }
     for path, expected_hash in mandatory_documents.items():
         if path not in seen_documents:
