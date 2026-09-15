@@ -4,6 +4,12 @@
 *.gd text eol=lf
 *.cs text eol=lf
 *.meta text eol=lf
+/docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md text eol=lf
+/docs/ADENDO_GOVERNANCA_REALIDADE_EVIDENCIAS_2026-09-15.md text eol=lf
+/docs/ADENDO_01_PORTABILIDADE_HASH_EOF_2026-09-15.md text eol=lf
+/docs/PLANO_IMUTAVEL_PRODUTO_REAL_2026-09-15.md text eol=lf
+/docs/IMMUTABLE_PLAN_LOCK_2026-09-15.json text eol=lf
+/docs/INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md text eol=lf
 /docs/evidence/** text eol=lf
 /docs/evidence/**/*.png binary
 /docs/evidence/**/*.jpg binary

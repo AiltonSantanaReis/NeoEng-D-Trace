@@ -38,7 +38,11 @@ Conflito documental bloqueia execução. Nenhuma equipe poderá escolher informa
 | Documento | Estado | Autoridade | Dependências |
 |---|---|---|---|
 | `GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md` | ATIVO / PREVALENTE | integridade, testes reais, no-bypass, sequência e baseline | decisões aprovadas |
+| `ADENDO_GOVERNANCA_REALIDADE_EVIDENCIAS_2026-09-15.md` | ATIVO / ADENDO NORMATIVO DE ENDURECIMENTO | leitura integral por etapa, plano imutável, evidência real e gate fail-closed | governança superior e decisão formal do proprietário |
+| `ADENDO_01_PORTABILIDADE_HASH_EOF_2026-09-15.md` | ATIVO / ADENDO NORMATIVO DE CORREÇÃO | EOL canônico, portabilidade de hashes e requalificação obrigatória Linux/Windows | plano imutável, adendo de realidade e falha real do PR #175 |
 | `PLANO_PRODUTO_PROFISSIONAL_NORMATIVO_COMPLETO_2026-08-24.md` | ATIVO | arquitetura, renderer, 2.5D, 3D e encerramento | governança |
+| `PLANO_IMUTAVEL_PRODUTO_REAL_2026-09-15.md` | ATIVO / PLANO IMUTÁVEL | plano aceito de produto real, fases, critérios e não regressão | governança superior e adendo de realidade |
+| `IMMUTABLE_PLAN_LOCK_2026-09-15.json` | ATIVO / LOCK CRIPTOGRÁFICO | hash do plano e da governança; bloqueio de adulteração | plano imutável e gate obrigatório |
 | `REQUISITOS_EDITOR_CENARIOS_COMPLETO_2026-08-30.md` | ATIVO / PREVALENTE PARA ESCOPO FINAL | requisitos obrigatórios do editor de cenários completo, sem entrega parcial | governança, C3 e decisões aprovadas |
 | `NEOENG_EDITOR_COMPOSICAO_2D_NORMATIVO_2026-08-27.md` | ATIVO / BASE DA FUNDAÇÃO P2D-COMP-01 | contrato, requisitos, ordem, gates e aceite da fundação de composição 2D | requisitos de escopo final, governança, C3 e decisões aprovadas |
 | `EVIDENCIA_P2D_00_RECONCILIACAO_2026-08-29.md` | ATIVO / EVIDÊNCIA ACEITA | reconciliação do checkout, P2D-00 e abertura das linhas futuras | normativo do editor e baseline local |

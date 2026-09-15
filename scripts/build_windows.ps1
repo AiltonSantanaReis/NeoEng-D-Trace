@@ -1,7 +1,9 @@
 [CmdletBinding()]
 param(
     [string]$OutputRoot = "release",
-    [string]$PythonExecutable = ""
+    [string]$PythonExecutable = "",
+    [string]$StrictStageAcknowledgement = "",
+    [string]$StrictDeliveryManifest = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -39,6 +41,17 @@ try {
             throw "No project Python runner found. Pass -PythonExecutable or install Poetry."
         }
     }
+
+    if (-not $StrictStageAcknowledgement) {
+        throw "Strict stage acknowledgement is required; candidate builds cannot bypass governance"
+    }
+    if (-not $StrictDeliveryManifest) {
+        throw "Strict OFFICIAL_DELIVERY manifest is required; unsealed builds cannot be released"
+    }
+    & $pythonCommand @pythonPrefix "tools/validate_strict_delivery_gate.py" "plan"
+    if ($LASTEXITCODE -ne 0) { throw "Immutable plan validation failed" }
+    & $pythonCommand @pythonPrefix "tools/validate_strict_delivery_gate.py" "stage" "G5" $StrictStageAcknowledgement
+    if ($LASTEXITCODE -ne 0) { throw "Strict stage acknowledgement validation failed" }
 
     $sourceStatus = git status --porcelain --untracked-files=all
     if ($LASTEXITCODE -ne 0) { throw "Unable to inspect source tree" }
@@ -110,10 +123,16 @@ try {
     $provenancePath = Join-Path $releaseRoot "continuity-provenance.json"
     $provenance | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $provenancePath -Encoding utf8
 
+    & $pythonCommand @pythonPrefix "tools/validate_strict_delivery_gate.py" "delivery" $StrictDeliveryManifest
+    if ($LASTEXITCODE -ne 0) {
+        throw "Strict official delivery gate failed; candidate remains unsealed"
+    }
+
     Write-Output "PORTABLE_BUNDLE=$bundle"
     Write-Output "PORTABLE_ARCHIVE=$archive"
     Write-Output "SOURCE_COMMIT=$sourceCommit"
     Write-Output "CONTINUITY_PROVENANCE=$provenancePath"
+    Write-Output "OFFICIAL_DELIVERY=PASS"
 } finally {
     Pop-Location
 }
