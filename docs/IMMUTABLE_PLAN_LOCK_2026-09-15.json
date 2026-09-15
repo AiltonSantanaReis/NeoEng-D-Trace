@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "lock_id": "LOCK-PLAN-REAL-20260915",
+  "immutable": true,
+  "amendment_policy": "ADDENDUM_ONLY",
+  "release_gate_fail_closed": true,
+  "stage_ack_required": true,
+  "plan_path": "docs/PLANO_IMUTAVEL_PRODUTO_REAL_2026-09-15.md",
+  "plan_sha256": "215fb4552fa34924a05357a1558f94d4ed55788cc3c08acd8114883f2adde4fa",
+  "governance_path": "docs/GOVERNANCA_INTEGRIDADE_EXECUCAO_E_ANTIALUCINACAO_2026-08-24.md",
+  "governance_sha256": "d933db005b7110c391cf776cda3014ce348d61a91a5e9902aeea619185ec3ea0",
+  "strict_addendum_path": "docs/ADENDO_GOVERNANCA_REALIDADE_EVIDENCIAS_2026-09-15.md",
+  "strict_addendum_sha256": "bc796f1e8da2a5ce96c1c6b8918a7a3a6dbc49f42a36107c600c554b5a7874b2",
+  "index_path": "docs/INDICE_DOCUMENTAL_ATIVO_CANONICO_2026-08-24.md",
+  "index_sha256": "26797da54d99b6002f84c26ca195cdec0a469ed93200d7636878c26cfc977e6d",
+  "base_commit_audited": "b1f2c63baf9e6c7c5ecc0a572b5d0e342bb7b335",
+  "canonical_reference_commit": "26521c1c4420996f05535dce68661545de2e8328",
+  "official_gate": "tools/validate_strict_delivery_gate.py",
+  "change_control": "Any change requires a new numbered addendum, formal approval, new hashes and a new protected commit."
+}

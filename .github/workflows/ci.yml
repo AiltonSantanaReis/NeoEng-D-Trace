@@ -32,6 +32,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Validate immutable product plan
+        run: python tools/validate_strict_delivery_gate.py plan
+
       - name: Verify clean baseline manifest
         run: python tools/baseline_integrity.py --verify --git-blob
       - name: Verify evidence manifest integrity
@@ -136,6 +139,9 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Validate immutable product plan
+        run: python tools/validate_strict_delivery_gate.py plan
 
       - name: Verify clean baseline manifest
         run: python tools/baseline_integrity.py --verify --git-blob
